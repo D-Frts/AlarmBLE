@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="AlarmBle.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:local="clr-namespace:AlarmBle"
+    xmlns:views="clr-namespace:AlarmBle.View"
+    Shell.TabBarIsVisible="False">
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid 
+                BackgroundColor="black" 
+                HeightRequest="230">
+                <Image 
+                    Source="alarm_ble_banner.png"
+                    Aspect="AspectFill"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+    <FlyoutItem 
+        FlyoutDisplayOptions="AsMultipleItems">
+
+        <ShellContent 
+            Title="Home" 
+            Icon="{AppThemeBinding Light=home_black.png, Dark=home_white.png}" 
+            ContentTemplate="{DataTemplate views:MainPage}"
+            Route="MainPage" />
+        <ShellContent 
+            Title="Add Device" 
+            Icon="{AppThemeBinding Light=add_black.png, Dark=add_white.png}"
+            ContentTemplate="{DataTemplate views:ScannerPage}"
+            Route="ScannerPage" />
+        <ShellContent 
+            Title="Settings" 
+            Icon="{AppThemeBinding Light=settings_black.png, Dark=settings_white.png}"
+            ContentTemplate="{DataTemplate views:DeviceSettingsPage}"
+            Route="DeviceSettingsPage" />
+
+    </FlyoutItem>
+
+
+</Shell>
