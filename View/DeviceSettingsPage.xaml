@@ -2,11 +2,31 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AlarmBle.View.DeviceSettingsPage"
-             Title="DeviceSettingsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
+             xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+             Title="{Static strings:AppResources.MenuItem_Settings}">
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30,0"
+        VerticalOptions="Center">
+
+        <Image
+            Source="{AppThemeBinding Light=empty_light.png, Dark=empty_dark.png}"
+            SemanticProperties.Description="Draw man confused"
+            HeightRequest="200"
             HorizontalOptions="Center" />
+
+        <Label
+            Text="{Static strings:AppResources.MenuItem_Settings}"
+            Style="{StaticResource ExtraLargeLabel}"
+            SemanticProperties.HeadingLevel="Level1"
+            HorizontalOptions="Center" />
+
+        <Label
+            Text="{Static strings:AppResources.LabelText_PageDevelopmentInProgress}"
+            Style="{StaticResource LargeLabel}"
+            SemanticProperties.HeadingLevel="Level2"
+            HorizontalOptions="Center" />
+
     </VerticalStackLayout>
+
 </ContentPage>

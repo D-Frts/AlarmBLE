@@ -6,12 +6,14 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:local="clr-namespace:AlarmBle"
     xmlns:views="clr-namespace:AlarmBle.View"
-    Shell.TabBarIsVisible="False">
+    xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+    Shell.TabBarIsVisible="False"
+    Style="{StaticResource BaseStyle}">
 
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
             <Grid 
-                BackgroundColor="black" 
+                BackgroundColor="{AppThemeBinding Default={StaticResource DarkBackground}}" 
                 HeightRequest="230">
                 <Image 
                     Source="alarm_ble_banner.png"
@@ -23,18 +25,18 @@
         FlyoutDisplayOptions="AsMultipleItems">
 
         <ShellContent 
-            Title="Home" 
-            Icon="{AppThemeBinding Light=home_black.png, Dark=home_white.png}" 
+            Title="{x:Static strings:AppResources.MenuItem_Home}" 
+            Icon="{AppThemeBinding Light=home_light.png, Dark=home_dark.png}" 
             ContentTemplate="{DataTemplate views:MainPage}"
             Route="MainPage" />
         <ShellContent 
-            Title="Add Device" 
-            Icon="{AppThemeBinding Light=add_black.png, Dark=add_white.png}"
+            Title="{x:Static strings:AppResources.MenuItem_AddDevice}" 
+            Icon="{AppThemeBinding Light=add_light.png, Dark=add_dark.png}"
             ContentTemplate="{DataTemplate views:ScannerPage}"
             Route="ScannerPage" />
         <ShellContent 
-            Title="Settings" 
-            Icon="{AppThemeBinding Light=settings_black.png, Dark=settings_white.png}"
+            Title="{x:Static strings:AppResources.MenuItem_Settings}" 
+            Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png}"
             ContentTemplate="{DataTemplate views:DeviceSettingsPage}"
             Route="DeviceSettingsPage" />
 

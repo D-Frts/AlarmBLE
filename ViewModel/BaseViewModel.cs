@@ -88,13 +88,13 @@ public partial class BaseViewModel : ObservableObject
                 }
             };
             //Configura um filtro para encontrar somente dispositivos com o devido Serviço
-            //ScanFilterOptions scanFilter = new()
-            //{
-            //    ServiceUuids = new[]{ new Guid( AlarmServiceUuids.AlarmService ) }
-            //};
+            ScanFilterOptions scanFilter = new()
+            {
+                ServiceUuids = new[ ] { new Guid( AlarmServiceUuids.AlarmService ) }
+            };
             DiscoveredDevices?.Clear();
-            //await Adapter.StartScanningForDevicesAsync( scanFilter );
-            await Adapter.StartScanningForDevicesAsync();
+            await Adapter.StartScanningForDevicesAsync( scanFilter );
+            //await Adapter.StartScanningForDevicesAsync();
 
 
         }

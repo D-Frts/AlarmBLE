@@ -7,56 +7,47 @@
     xmlns:models="clr-namespace:AlarmBle.Model"
     xmlns:views="clr-namespace:AlarmBle.View"
     xmlns:viewmodels="clr-namespace:AlarmBle.ViewModel"
+    xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
     x:Class="AlarmBle.View.ScannerPage"
     x:DataType="viewmodels:ScannerViewModel"
-    Title="Add Devices">
-    
+    Title="{Static strings:AppResources.MenuItem_AddDevice}">
+
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior 
-            EventName="Appearing"
+            EventName="NavigatedTo"
             Command="{Binding SearchDevicesCommand}"/>
     </ContentPage.Behaviors>
 
-    
-        <RefreshView
+
+    <RefreshView
             IsRefreshing="{Binding IsScanning}"
             Command="{Binding SearchDevicesCommand}" IsEnabled="{Binding IsNotBusy}">
         <ScrollView >
             <Grid 
                 RowDefinitions="Auto, Auto" 
                 RowSpacing="10">
-
-                <ActivityIndicator 
-                    Grid.RowSpan="2"
-                    IsRunning="{Binding IsBusy}"
-                    VerticalOptions="CenterAndExpand"
-                    HorizontalOptions="CenterAndExpand"/>
                 <!--Lista os dispositivos pareados-->
                 <VerticalStackLayout 
                     Spacing="5" 
                     Margin="8">
                     <Label 
-                        Text="Paired Devices"
-                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                        FontSize="14"
+                        Text="{Static strings:AppResources.LabelText_PairedDevices}"
+                        Style="{StaticResource SmallLabel}"                        
                         Margin="5"/>
                     <Frame 
-                        BackgroundColor="White"
-                        BorderColor="Transparent"
-                        CornerRadius="10">
+                        Style="{StaticResource FrameBase}">
                         <CollectionView 
                             ItemsSource="{Binding BondedDevices}"
                             VerticalOptions="Center"
-                            EmptyView="No Paired Devices">
+                            EmptyView="{Static strings:AppResources.EmptyText_NoPairedDevices}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate 
                                     x:DataType="models:BleDevice">
                                     <Label 
                                         Text="{Binding Device.Name}"
-                                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                        Style="{StaticResource ExtraLargeLabel}"
                                         Padding="10"
-                                        Margin="5"
-                                        FontSize="24">
+                                        Margin="5">
                                     </Label>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -69,52 +60,32 @@
                     Spacing="5"
                     Margin="8,0">
                     <Label 
-                        Text="Availabe Devices"
-                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                        FontSize="14"
+                        Text="{Static strings:AppResources.LabelText_AvailableDevices}"
+                        Style="{StaticResource SmallLabel}"
                         Margin="5"/>
-                    <Frame 
-                        BackgroundColor="White"
-                        BorderColor="Transparent"
-                        CornerRadius="10">
+                    <Frame Style="{StaticResource FrameBase}">
                         <CollectionView 
-                            ItemsSource="{Binding DiscoveredDevices}">
-                            <CollectionView.EmptyView>
-                                <StackLayout >
-                                    <Image 
-                                        Source="{AppThemeBinding Light=empty_white.png, Dark=empty_black.png}"
-                                        Aspect="AspectFill"
-                                        HeightRequest="200"                               
-                                        VerticalOptions="CenterAndExpand"
-                                        HorizontalOptions="CenterAndExpand">
-                                    </Image>
-                                </StackLayout>
-                            </CollectionView.EmptyView>
-
+                            ItemsSource="{Binding DiscoveredDevices}"
+                            EmptyView="{Static strings:AppResources.EmptyText_NoDevicesFound}">
+                           
                             <CollectionView.ItemTemplate>
                                 <DataTemplate 
                                     x:DataType="models:BleDevice">
-                                    <Frame 
-                                        HeightRequest="100" 
-                                        BackgroundColor="Transparent"
-                                        BorderColor="{AppThemeBinding Light=Transparent, Dark=LightGray}"
-                                        CornerRadius="25"
-                                        Padding="0">
+                                    <Frame Style="{StaticResource CardView}">
                                         <Grid 
                                             ColumnDefinitions="0.2*, 0.8*" 
                                             ColumnSpacing="15">
                                             <Image 
-                                                Source="{AppThemeBinding Light=device_black.png, Dark=device_white.png}" 
+                                                Source="{AppThemeBinding Light=device_ble_light.png, Dark=device_ble_dark.png}" 
                                                 Aspect="AspectFit"
                                                 HeightRequest="30"/>
                                             <Label 
                                                 Grid.Column="1"
-                                                FontSize="20"
+                                                Style="{StaticResource LargeLabel}"
                                                 Text="{Binding Device.Name, TargetNullValue='Unknow'}" 
                                                 VerticalOptions="Center" 
                                                 HorizontalOptions="StartAndExpand"
-                                                Padding="10"
-                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                                Padding="10"/>
                                         </Grid>
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer 
@@ -124,11 +95,18 @@
                                     </Frame>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
+                            
+
                         </CollectionView>
                     </Frame>
                 </VerticalStackLayout>
+                <ActivityIndicator 
+                    Grid.RowSpan="2"
+                    IsRunning="{Binding IsBusy}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
 
             </Grid>
         </ScrollView>
-    </RefreshView>  
+    </RefreshView>
 </ContentPage>
