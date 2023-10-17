@@ -51,7 +51,7 @@ public partial class BaseViewModel : ObservableObject
     public ObservableCollection<BleDevice> BondedDevices { get; set; } = new();
 
     [ObservableProperty]
-    BleDevice bleDevice;
+    BleDevice remoteDevice;
 
     public bool IsNotBusy => !IsBusy;
     public bool IsNotRefreshing => !IsRefreshing;
@@ -84,7 +84,9 @@ public partial class BaseViewModel : ObservableObject
                 //verifica se a coleção ja contém o dispositivo encontrado
                 if ( !DiscoveredDevices.Where( device => device.Device.Id == args.Device.Id ).Any() )
                 {
-                    DiscoveredDevices?.Add( new BleDevice( args.Device ) );
+                    RemoteDevice = new BleDevice( args.Device );
+
+					DiscoveredDevices?.Add( RemoteDevice );
                 }
             };
             //Configura um filtro para encontrar somente dispositivos com o devido Serviço
@@ -186,7 +188,6 @@ public partial class BaseViewModel : ObservableObject
             IsBusy = false;
         }
     }
-
     public virtual async Task BondToDevice( BleDevice device )
     {
         try
@@ -221,7 +222,55 @@ public partial class BaseViewModel : ObservableObject
         }
 
     }
+    public virtual async Task<ICharacteristic> GetRemoteCharacteristic(BleDevice device, string serviceUuid, string charUuid )
+    {
+        try
+        {
+            IsBusy = true;
+            var remoteService = await device.Device.GetServiceAsync( new Guid( serviceUuid ) );
+            return await remoteService.GetCharacteristicAsync( new Guid( charUuid ) );
 
+        }
+        catch ( Exception ex )
+        {
+			Debug.WriteLine( $"{ex.Message}" );
+			await Shell.Current.DisplayAlert( "Error", $"{ex.Message}", "OK" );
+            //TODO: Retorna para outra página após exibir mensagem da falha
+            return null;
+		}
+        finally
+        {
+            IsBusy = false;           
+        }
+	}
+    public virtual async Task<object> GetRemoteCharacteriticValue(ICharacteristic characteristic )
+    {        
+
+        if ( characteristic.Uuid.Equals( AlarmServiceUuids.SensorSensibility ) || characteristic.Uuid.Equals( AlarmServiceUuids.Passkey ) )
+        {
+            return await Task.FromResult( BitConverter.ToInt32( characteristic.Value, 0 ) );
+        }
+        else
+            return await Task.FromResult( BitConverter.ToBoolean( characteristic.Value, 0 ) );
+        
+    }
+    public virtual async Task WriteRemoteCharacteristicValue( ICharacteristic characteristic, object newValue = null )
+    {
+        byte[] bytes;
+        if ( characteristic.Uuid.Equals( AlarmServiceUuids.SensorSensibility ) || 
+            characteristic.Uuid.Equals( AlarmServiceUuids.Passkey ) && 
+            newValue != null)
+        {
+            bytes = BitConverter.GetBytes( (int) newValue );
+        }
+        else
+        {
+            newValue = !BitConverter.ToBoolean( characteristic.Value, 0 );
+            bytes = (bool)newValue ? new byte[1] { 0x01 } : new byte[1] { 0x00 };            
+        }
+		await characteristic.WriteAsync( bytes );
+
+	}
     public virtual async Task OnToastAsync( string message, ToastDuration duration = ToastDuration.Short, int fontSize = 14 )
     {
         CancellationTokenSource cancellationTokenSource = new();

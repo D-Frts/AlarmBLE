@@ -132,8 +132,14 @@
   <data name="LabelText_PairedDevices" xml:space="preserve">
     <value>Paired Devices</value>
   </data>
+  <data name="MenuItem_About" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="MenuItem_AddDevice" xml:space="preserve">
     <value>Add Device</value>
+  </data>
+  <data name="MenuItem_Help" xml:space="preserve">
+    <value>Help</value>
   </data>
   <data name="MenuItem_Home" xml:space="preserve">
     <value>Home</value>

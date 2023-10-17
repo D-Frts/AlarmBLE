@@ -106,11 +106,29 @@ namespace AlarmBle.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string MenuItem_About {
+            get {
+                return ResourceManager.GetString("MenuItem_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Device.
         /// </summary>
         internal static string MenuItem_AddDevice {
             get {
                 return ResourceManager.GetString("MenuItem_AddDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string MenuItem_Help {
+            get {
+                return ResourceManager.GetString("MenuItem_Help", resourceCulture);
             }
         }
         

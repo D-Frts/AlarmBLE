@@ -120,7 +120,7 @@
   <data name="EmptyText_NoDevicesFound" xml:space="preserve">
     <value>Nenhum dispositivo encontrado</value>
   </data>
-  <data name="EmptyText_NotPairedDevices" xml:space="preserve">
+  <data name="EmptyText_NoPairedDevices" xml:space="preserve">
     <value>Nenhum dispositivo pareado</value>
   </data>
   <data name="LabelText_AvailableDevices" xml:space="preserve">
@@ -132,8 +132,14 @@
   <data name="LabelText_PairedDevices" xml:space="preserve">
     <value>Dispositivos Pareados</value>
   </data>
+  <data name="MenuItem_About" xml:space="preserve">
+    <value>Sobre</value>
+  </data>
   <data name="MenuItem_AddDevice" xml:space="preserve">
     <value>Adicionar Dispositivo</value>
+  </data>
+  <data name="MenuItem_Help" xml:space="preserve">
+    <value>Ajuda</value>
   </data>
   <data name="MenuItem_Home" xml:space="preserve">
     <value>Início</value>

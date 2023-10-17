@@ -41,6 +41,12 @@
             Route="DeviceSettingsPage" />
 
     </FlyoutItem>
-
+    
+    <MenuItem 
+        Text="{Static strings:AppResources.MenuItem_About}"
+        IconImageSource="{AppThemeBinding Light=info_light.png, Dark=info_dark.png}"/>
+    <MenuItem 
+        Text="{Static strings:AppResources.MenuItem_Help}"
+        IconImageSource="{AppThemeBinding Light=help_light.png, Dark=help_dark.png}"/>
 
 </Shell>

@@ -1,38 +1,285 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AlarmBle"
+             xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
              x:Class="AlarmBle.View.MainPage"
+             x:DataType="viewmodel:MainPageViewModel"
              Title="{Static strings:AppResources.MenuItem_Home}">
 
-    <VerticalStackLayout
-        Spacing="25"
-        Padding="30,0"
-        VerticalOptions="Center">
+    <Grid 
+        RowDefinitions=" 0.4*, 0.2*, 0.2*, 0.20*"
+        ColumnDefinitions="*,Auto"
+        RowSpacing="10"
+        Padding="8">
+        <!--Primeira linha Segunda Coluna: icone de Status do Alarme e Bateria do veiculo -->
+        <VerticalStackLayout 
+            Grid.Column="1"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand">
+            <VerticalStackLayout>
+                <Image             
+                    Source="{AppThemeBinding Light=lock_light, Dark=lock_dark}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    HeightRequest="40"/>
+                <Label 
+                    Text="Active"
+                    FontSize="16"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Image             
+                     Source="{AppThemeBinding Light=battery2_light.png, Dark=battery2_dark.png}"
+                     VerticalOptions="CenterAndExpand"
+                     HorizontalOptions="CenterAndExpand"
+                     HeightRequest="40"/>
+                <Label 
+                     Text="100%"
+                     FontSize="16"
+                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                     VerticalOptions="CenterAndExpand"
+                     HorizontalOptions="CenterAndExpand"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+        <!--Primeira linha: ilustração de motocicleta animada-->
+        <Image 
+            Grid.ColumnSpan="2" 
+            Source="{AppThemeBinding Light=moto_light.png, Dark=moto_dark.png}"
+            HeightRequest="300"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Margin="0, 0, 0, 40"
+            IsAnimationPlaying="False"/>
+        <!--Segunda linha: botoes de ativar e desativar o alarme-->
+        <VerticalStackLayout
+            Grid.ColumnSpan="2"
+            Grid.Row="1">
+            <Frame             
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand"
+            WidthRequest="320"
+            HeightRequest="100"
+            CornerRadius="20"
+            BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+            BackgroundColor="{AppThemeBinding Light=Transparent, Dark={StaticResource PrimaryDark}}">
+                <HorizontalStackLayout 
+                HorizontalOptions="Center" Spacing="60">
+                    <ImageButton 
+                    Source="{AppThemeBinding Light=lock_light.png, Dark=lock_dark.png}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LockVisualStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.9"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                    <Line
+                    Y2="200"
+                    Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                    <ImageButton 
+                    Source="{AppThemeBinding Light=lock_open_light.png, Dark=lock_open_dark.png}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LockOpenVisualStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.9"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                </HorizontalStackLayout>
+            </Frame>
+            <HorizontalStackLayout 
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Spacing="60">
+                <Label 
+                    Text="Activate Alarm"
+                    FontSize="18"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                <Label 
+                    Text="Deactivate Alarm"
+                    FontSize="18"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <!--Terceira linha: botoes de ativar e desativar aviso sonoro e luminoso-->
+        <VerticalStackLayout
+            Grid.ColumnSpan="2"
+            Grid.Row="2">
+            <Frame             
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="320"
+                HeightRequest="100"
+                CornerRadius="20"
+                BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                BackgroundColor="{AppThemeBinding Light=Transparent, Dark={StaticResource PrimaryDark}}">
+                <HorizontalStackLayout 
+                    HorizontalOptions="Center" Spacing="60">
+                    <ImageButton 
+                        Source="{AppThemeBinding Light=beep_on_light.png, Dark=beep_on_dark.png}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LockVisualStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.9"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                    <Line
+                        Y2="200"
+                        Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                    <ImageButton 
+                        Source="{AppThemeBinding Light=blink_on_light.png, Dark=blink_on_dark.png}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LockOpenVisualStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.9"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                </HorizontalStackLayout>
+            </Frame>
+            <HorizontalStackLayout 
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Spacing="60">
+                <Label 
+                    Text="Beep"
+                    FontSize="18"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                <Label 
+                    Text="Blink"
+                    FontSize="18"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+            </HorizontalStackLayout>
 
-        <Image
-            Source="{AppThemeBinding Light=empty_light.png, Dark=empty_dark.png}"
-            SemanticProperties.Description="Draw man confused"
-            HeightRequest="200"
-            HorizontalOptions="Center" />
+        </VerticalStackLayout>
+        <!--Quarta linha: ultima localização do veiculo e função não definida-->
+        <HorizontalStackLayout 
+            Grid.ColumnSpan="2"
+            Grid.Row="3"
+            Spacing="20"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand">
+            <VerticalStackLayout>
+                <Frame 
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="120"
+                    HeightRequest="100"
+                    CornerRadius="20"
+                    BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                    BackgroundColor="{AppThemeBinding Light=Transparent, Dark={StaticResource PrimaryDark}}">
+                    <ImageButton 
+                        Source="{AppThemeBinding Light=location_light.png, Dark=location_dark.png}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LockOpenVisualStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.9"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
 
-        <Label
-            Text="{Static strings:AppResources.MenuItem_Home}"
-            Style="{StaticResource ExtraLargeLabel}"
-            SemanticProperties.HeadingLevel="Level1"
-            HorizontalOptions="Center" />
+                </Frame>
+                <Label
+                    Text="Location"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                    FontSize="18"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Frame 
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="120"
+                    HeightRequest="100"
+                    CornerRadius="20"
+                    BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                    BackgroundColor="{AppThemeBinding Light=Transparent, Dark={StaticResource PrimaryDark}}">
+                    <ImageButton 
+                        Source="{AppThemeBinding Light=empty_light.png, Dark=empty_dark.png}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LockOpenVisualStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.9"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
 
-        <Label
-            Text="{Static strings:AppResources.LabelText_PageDevelopmentInProgress}"
-            Style="{StaticResource LargeLabel}"
-            SemanticProperties.HeadingLevel="Level2"
-            SemanticProperties.Description="Alarm BLE App"            
-            HorizontalOptions="Center" />
-
-
-
-
-    </VerticalStackLayout>
+                </Frame>
+                <Label 
+                    Text="Undefined"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                    FontSize="18"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+    </Grid>
 
 </ContentPage>

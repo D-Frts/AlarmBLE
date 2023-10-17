@@ -47,8 +47,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\battery2_dark.svg" />
+	  <None Remove="Resources\Images\battery2_lght.svg" />
+	  <None Remove="Resources\Images\car_battery_dark.svg" />
+	  <None Remove="Resources\Images\car_battery_icon.jpg" />
 	  <None Remove="Resources\Images\device_ble_dark.svg" />
 	  <None Remove="Resources\Images\device_ble_light.svg" />
+	  <None Remove="Resources\Images\off_switch_dark.png" />
+	  <None Remove="Resources\Images\off_switch_light.png" />
+	  <None Remove="Resources\Images\on_switch_dark.png" />
+	  <None Remove="Resources\Images\on_switch_light.png" />
+	  <None Remove="Resources\Images\power_btn_off.svg" />
+	  <None Remove="Resources\Images\power_btn_on.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

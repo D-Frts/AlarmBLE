@@ -1,4 +1,5 @@
 ﻿using AlarmBle.Model;
+using AlarmBle.View;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.BLE.Abstractions.Contracts;
 
@@ -34,10 +35,18 @@ public partial class ScannerViewModel : BaseViewModel
         await ConnectToDevice( device );
         if ( IsNotBonded )
             await BondToDevice( device );
+        if ( IsConnected && IsBonded )
+        {
+			await NavigateTo( nameof(MainPage) );
+        }
     }
     static async Task DisplayAlert( string message )
     {
         await Shell.Current.DisplayAlert( string.Empty, message, "OK" );
 
+    }
+    static async Task NavigateTo(string page )
+    {
+        await Shell.Current.GoToAsync( page, true );
     }
 }

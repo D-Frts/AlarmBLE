@@ -31,7 +31,8 @@ namespace AlarmBle
             builder.Services.AddSingleton<ScannerPage>();
             builder.Services.AddTransient<DeviceSettingsPage>();
 
-            builder.Services.AddSingleton<ScannerViewModel>();
+			builder.Services.AddSingleton<MainPageViewModel>();
+			builder.Services.AddSingleton<ScannerViewModel>();
             builder.Services.AddTransient<DeviceSettingsViewModel>();
 
             return builder.Build();

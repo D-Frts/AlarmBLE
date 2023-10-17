@@ -1,10 +1,13 @@
-﻿namespace AlarmBle.View;
+﻿using AlarmBle.ViewModel;
+
+namespace AlarmBle.View;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage()
+    public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = viewModel;
     }
 
 }
