@@ -9,79 +9,119 @@ namespace AlarmBle.ViewModel;
 
 public partial class MainPageViewModel : BaseViewModel
 {
-	[ObservableProperty]
-	string switchImage;
-	AppTheme currentTheme;
+	static AppTheme currentTheme;
+	Timer timer;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor( nameof( AlarmStateToggled ) )]
 	ICharacteristic alarmState;
 	[ObservableProperty]
 	bool alarmStateToggled;
+	[ObservableProperty]
+	bool beepStateToggled;
+	[ObservableProperty]
+	bool blinkStateToggled;
+	[ObservableProperty]
+	static string motoImage;
+	[ObservableProperty]
+	static bool isMotoAnimated;
+	[ObservableProperty]
+	string statusAlarm;
 	public MainPageViewModel( IBluetoothLE bluetoothLE, IAdapter adapter ) : base( bluetoothLE, adapter )
 	{
 		Application.Current.RequestedThemeChanged += ( sender, args ) =>
 		{
 			currentTheme = args.RequestedTheme;
+			MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		};
 		currentTheme = Application.Current.RequestedTheme;
-		
+		StatusAlarm = "Inactive";
+		MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
+		IsMotoAnimated = false;
+		BeepStateToggled = false;
+		BlinkStateToggled = false;
 	}
 
 	async Task GetAlarmState()
 	{
 		AlarmState = await GetRemoteCharacteristic( RemoteDevice, AlarmServiceUuids.AlarmService, AlarmServiceUuids.State );
-		AlarmState.ValueUpdated += AlarmState_ValueUpdated;
-		AlarmStateToggled = (bool) await GetRemoteCharacteriticValue( AlarmState );		
-		if ( AlarmStateToggled )
-		{
-			SwitchImage = currentTheme is AppTheme.Light ? "on_switch_light.png" : "on_switch_dark.png";
-		}
-		else
-		{
-			SwitchImage = currentTheme is AppTheme.Light ? "off_switch_light.png" : "off_switch_dark.png";
-		}
-	}
-	private async void AlarmState_ValueUpdated( object sender, CharacteristicUpdatedEventArgs e )
-	{
-		AlarmState = e.Characteristic;
 		AlarmStateToggled = (bool) await GetRemoteCharacteriticValue( AlarmState );
-		if ( AlarmStateToggled )
-		{
-			SwitchImage = currentTheme is AppTheme.Light ? "on_switch_light.png" : "on_switch_dark.png";
-		}
-		else
-		{
-			SwitchImage = currentTheme is AppTheme.Light ? "off_switch_light.png" : "off_switch_dark.png";
-		}
 	}
-	async Task ToggleAlarmState()
+
+	[RelayCommand]
+	void ActivateAlarm()
 	{
-
+		AlarmStateToggled = true;
+		StatusAlarm = "Active";
+		if ( BlinkStateToggled || BeepStateToggled )
+		{
+			if ( BlinkStateToggled && BeepStateToggled )
+			{
+				MotoAnimation( "moto_beep_blink" );
+			}
+			else if ( BlinkStateToggled && !BeepStateToggled )
+			{
+				MotoAnimation( "moto_blink" );
+			}
+			else if ( !BlinkStateToggled && BeepStateToggled )
+			{
+				MotoAnimation( "moto_beep" );
+			}
+		}
 	}
 
-	//[RelayCommand]
-	//void ToggleSwitchImage()
-	//{
-	//	switchToggled = !switchToggled;
-	//	if ( currentTheme is AppTheme.Light )
-	//	{
-	//		if(switchToggled)
-	//			SwitchImage = "on_switch_light.png";
-	//		else
-	//			SwitchImage = "off_switch_light.png";
-	//	}
-	//	if ( currentTheme is AppTheme.Dark )
-	//	{
-	//		if ( switchToggled )
-	//			SwitchImage = "on_switch_dark.png";
-	//		else
-	//			SwitchImage = "off_switch_dark.png";
-	//	}
+	[RelayCommand]
+	void DeactivateAlarm()
+	{
+		AlarmStateToggled = false;
+		StatusAlarm = "Inactive";
+		if ( BlinkStateToggled || BeepStateToggled )
+		{
+			if ( BlinkStateToggled && BeepStateToggled )
+			{
+				MotoAnimation( "moto_beep_blink", 2 );
+			}
+			else if ( BlinkStateToggled && !BeepStateToggled )
+			{
+				MotoAnimation( "moto_blink", 2 );
+			}
+			else if ( !BlinkStateToggled && BeepStateToggled )
+			{
+				MotoAnimation( "moto_beep", 2 );
+			}
+		}
+	}
+
+	[RelayCommand]
+	void ToggleBeep()
+	{
+		BeepStateToggled = !BeepStateToggled;
+		if ( BeepStateToggled )
+			MotoAnimation( "moto_beep" );
+	}
+
+	[RelayCommand]
+	void ToggleBlink()
+	{
+		BlinkStateToggled = !BlinkStateToggled;
+		if ( BlinkStateToggled )
+			MotoAnimation("moto_blink");
 
 
-	//}
+	}
+	void MotoAnimation(string animation, int iteration = 1)
+	{
+		MotoImage = currentTheme is AppTheme.Light ? animation + "_light.gif" : animation + "_dark.gif";
+		IsMotoAnimated = true;
+		if (iteration != 0)
+			timer = new( ResetAnimation, null, iteration*500, Timeout.Infinite );
+	}
 
-
+	void ResetAnimation( object state )
+	{
+		IsMotoAnimated = false;
+		MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
+		timer?.Dispose();
+	}
 
 }

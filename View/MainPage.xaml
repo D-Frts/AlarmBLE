@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:AlarmBle"
              xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
              x:Class="AlarmBle.View.MainPage"
              x:DataType="viewmodel:MainPageViewModel"
@@ -20,13 +21,25 @@
             HorizontalOptions="CenterAndExpand"
             VerticalOptions="CenterAndExpand">
             <VerticalStackLayout>
-                <Image             
-                    Source="{AppThemeBinding Light=lock_light, Dark=lock_dark}"
+                <Image
+                    x:Name="statusIcon"
+                    Source="{AppThemeBinding Light=lock_open_light.png, Dark=lock_open_dark.png}"
                     VerticalOptions="CenterAndExpand"
                     HorizontalOptions="CenterAndExpand"
-                    HeightRequest="40"/>
-                <Label 
-                    Text="Active"
+                    HeightRequest="40">
+                    <Image.Triggers>
+                        <DataTrigger 
+                            TargetType="Image"
+                            Binding="{Binding AlarmStateToggled}" 
+                            Value="True">
+                            <Setter Property="Source" 
+                                    Value="{AppThemeBinding Light=lock_light.png, Dark=lock_dark.png}"/>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+                <Label
+                    x:Name="statusLabel"
+                    Text="{Binding StatusAlarm}"
                     FontSize="16"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
                     VerticalOptions="CenterAndExpand"
@@ -49,30 +62,32 @@
         <!--Primeira linha: ilustração de motocicleta animada-->
         <Image 
             Grid.ColumnSpan="2" 
-            Source="{AppThemeBinding Light=moto_light.png, Dark=moto_dark.png}"
+            Source="{Binding MotoImage}"
             HeightRequest="300"
             HorizontalOptions="CenterAndExpand"
-            VerticalOptions="CenterAndExpand"
-            Margin="0, 0, 0, 40"
-            IsAnimationPlaying="False"/>
+            VerticalOptions="CenterAndExpand"            
+            IsAnimationPlaying="{Binding IsMotoAnimated}"
+            />
         <!--Segunda linha: botoes de ativar e desativar o alarme-->
         <VerticalStackLayout
             Grid.ColumnSpan="2"
             Grid.Row="1">
             <Frame             
-            HorizontalOptions="CenterAndExpand"
-            VerticalOptions="CenterAndExpand"
-            WidthRequest="320"
-            HeightRequest="100"
-            CornerRadius="20"
-            BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
-            BackgroundColor="{AppThemeBinding Light=Transparent, Dark={StaticResource PrimaryDark}}">
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="320"
+                HeightRequest="100"
+                CornerRadius="20"
+                BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                BackgroundColor="{AppThemeBinding Light=Transparent, Dark={StaticResource PrimaryDark}}">
                 <HorizontalStackLayout 
-                HorizontalOptions="Center" Spacing="60">
+                    HorizontalOptions="Center"
+                    Spacing="60">
                     <ImageButton 
-                    Source="{AppThemeBinding Light=lock_light.png, Dark=lock_dark.png}"
-                    VerticalOptions="CenterAndExpand"
-                    HorizontalOptions="CenterAndExpand">
+                        Source="{AppThemeBinding Light=lock_light.png, Dark=lock_dark.png}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        Command="{Binding ActivateAlarmCommand}" >
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="LockVisualStates">
                                 <VisualState x:Name="Normal">
@@ -92,9 +107,10 @@
                     Y2="200"
                     Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
                     <ImageButton 
-                    Source="{AppThemeBinding Light=lock_open_light.png, Dark=lock_open_dark.png}"
-                    VerticalOptions="CenterAndExpand"
-                    HorizontalOptions="CenterAndExpand">
+                        Source="{AppThemeBinding Light=lock_open_light.png, Dark=lock_open_dark.png}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        Command="{Binding DeactivateAlarmCommand}" >
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="LockOpenVisualStates">
                                 <VisualState x:Name="Normal">
@@ -115,7 +131,7 @@
             <HorizontalStackLayout 
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand"
-                Spacing="60">
+                Spacing="50">
                 <Label 
                     Text="Activate Alarm"
                     FontSize="18"
@@ -141,9 +157,20 @@
                 <HorizontalStackLayout 
                     HorizontalOptions="Center" Spacing="60">
                     <ImageButton 
-                        Source="{AppThemeBinding Light=beep_on_light.png, Dark=beep_on_dark.png}"
+                        Source="{AppThemeBinding Light=beep_off_light.png, Dark=beep_off_dark.png}"
+                        Command="{Binding ToggleBeepCommand}"
                         VerticalOptions="CenterAndExpand"
                         HorizontalOptions="CenterAndExpand">
+                        <ImageButton.Triggers>
+                            <DataTrigger 
+                                TargetType="ImageButton" 
+                                Binding="{Binding BeepStateToggled}"
+                                Value="True">
+                                <Setter 
+                                    Property="Source" 
+                                    Value="{AppThemeBinding Light=beep_on_light.png, Dark=beep_on_dark.png}"/>
+                            </DataTrigger>
+                        </ImageButton.Triggers>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="LockVisualStates">
                                 <VisualState x:Name="Normal">
@@ -163,9 +190,20 @@
                         Y2="200"
                         Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
                     <ImageButton 
-                        Source="{AppThemeBinding Light=blink_on_light.png, Dark=blink_on_dark.png}"
+                        Source="{AppThemeBinding Light=blink_off_light.png, Dark=blink_off_dark.png}" 
+                        Command="{Binding ToggleBlinkCommand}"
                         VerticalOptions="CenterAndExpand"
                         HorizontalOptions="CenterAndExpand">
+                        <ImageButton.Triggers>
+                            <DataTrigger 
+                                TargetType="ImageButton" 
+                                Binding="{Binding BlinkStateToggled}"
+                                Value="True">
+                                <Setter 
+                                    Property="Source" 
+                                    Value="{AppThemeBinding Light=blink_on_light.png, Dark=blink_on_dark.png}"/>
+                            </DataTrigger>
+                        </ImageButton.Triggers>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="LockOpenVisualStates">
                                 <VisualState x:Name="Normal">
@@ -186,7 +224,7 @@
             <HorizontalStackLayout 
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand"
-                Spacing="60">
+                Spacing="120">
                 <Label 
                     Text="Beep"
                     FontSize="18"
