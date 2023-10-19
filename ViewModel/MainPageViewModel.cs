@@ -25,9 +25,9 @@ public partial class MainPageViewModel : BaseViewModel
 	[ObservableProperty]
 	bool blinkStateToggled;
 	[ObservableProperty]
-	static string motoImage;
+	static string bikeImage;
 	[ObservableProperty]
-	static bool isMotoAnimated;
+	static bool isBikeAnimated;
 	[ObservableProperty]
 	string statusAlarm;
 
@@ -37,12 +37,12 @@ public partial class MainPageViewModel : BaseViewModel
 		Application.Current.RequestedThemeChanged += ( sender, args ) =>
 		{
 			currentTheme = args.RequestedTheme;
-			MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
+			BikeImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		};
 		currentTheme = Application.Current.RequestedTheme;
 		StatusAlarm = AppResources.LabelStatus_Inactive;
-		MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
-		IsMotoAnimated = false;
+		BikeImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
+		IsBikeAnimated = false;
 		BeepStateToggled = false;
 		BlinkStateToggled = false;
 		this.fingerprint = fingerprint;
@@ -106,17 +106,17 @@ public partial class MainPageViewModel : BaseViewModel
 		{
 			if ( blink && beep )
 			{
-				MotoAnimation( theme, "moto_beep_blink", reapeat );
+				BikeAnimation( theme, "moto_beep_blink", reapeat );
 				return;
 			}
 			else if ( blink && !beep )
 			{
-				MotoAnimation( theme, "moto_blink", reapeat );
+				BikeAnimation( theme, "moto_blink", reapeat );
 				return;
 			}
 			else if ( !blink && beep )
 			{
-				MotoAnimation( theme, "moto_beep", reapeat );
+				BikeAnimation( theme, "moto_beep", reapeat );
 				return;
 			}
 		}
@@ -127,7 +127,7 @@ public partial class MainPageViewModel : BaseViewModel
 	{
 		BeepStateToggled = !BeepStateToggled;
 		if ( BeepStateToggled )
-			MotoAnimation( currentTheme, "moto_beep", 1 );
+			BikeAnimation( currentTheme, "moto_beep", 1 );
 	}
 
 	[RelayCommand]
@@ -135,14 +135,15 @@ public partial class MainPageViewModel : BaseViewModel
 	{
 		BlinkStateToggled = !BlinkStateToggled;
 		if ( BlinkStateToggled )
-			MotoAnimation( currentTheme, "moto_blink", 1 );
+			BikeAnimation( currentTheme, "moto_blink", 1 );
 
 
 	}
-	void MotoAnimation( AppTheme theme, string animation, int reapeat = -1 )
+
+	void BikeAnimation( AppTheme theme, string animation, int reapeat = -1 )
 	{
-		MotoImage = theme is AppTheme.Light ? animation + "_light.gif" : animation + "_dark.gif";
-		IsMotoAnimated = true;
+		BikeImage = theme is AppTheme.Light ? animation + "_light.gif" : animation + "_dark.gif";
+		IsBikeAnimated = true;
 		if ( reapeat == -1 )
 			return;
 		if ( reapeat > 0 )
@@ -153,8 +154,8 @@ public partial class MainPageViewModel : BaseViewModel
 	void ResetAnimation( object state )
 	{
 		var appTheme = (AppTheme) state;
-		IsMotoAnimated = false;
-		MotoImage = appTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
+		IsBikeAnimated = false;
+		BikeImage = appTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		timer?.Dispose();
 	}
 
