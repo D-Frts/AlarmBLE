@@ -4,11 +4,15 @@
              xmlns:local="clr-namespace:AlarmBle"
              xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
              x:Class="AlarmBle.View.MainPage"
              x:DataType="viewmodel:MainPageViewModel"
              Title="{Static strings:AppResources.MenuItem_Home}">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior 
+            EventName="Loaded"
+            Command="{Binding AuthenticateCommand}"/>
+    </ContentPage.Behaviors>
 
     <Grid 
         RowDefinitions=" 0.4*, 0.2*, 0.2*, 0.20*"
@@ -40,7 +44,7 @@
                 <Label
                     x:Name="statusLabel"
                     Text="{Binding StatusAlarm}"
-                    FontSize="16"
+                    FontSize="12"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
                     VerticalOptions="CenterAndExpand"
                     HorizontalOptions="CenterAndExpand"/>
@@ -133,11 +137,11 @@
                 HorizontalOptions="CenterAndExpand"
                 Spacing="50">
                 <Label 
-                    Text="Activate Alarm"
+                    Text="{Static strings:AppResources.LabelText_ActivateAlarm}"
                     FontSize="18"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
                 <Label 
-                    Text="Deactivate Alarm"
+                    Text="{Static strings:AppResources.LabelText_DeactivateAlarm}"
                     FontSize="18"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
             </HorizontalStackLayout>
@@ -226,11 +230,11 @@
                 HorizontalOptions="CenterAndExpand"
                 Spacing="120">
                 <Label 
-                    Text="Beep"
+                    Text="{Static strings:AppResources.LabelText_Beep}"
                     FontSize="18"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
                 <Label 
-                    Text="Blink"
+                    Text="{Static strings:AppResources.LabelText_Blink}"
                     FontSize="18"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
             </HorizontalStackLayout>
@@ -274,7 +278,7 @@
 
                 </Frame>
                 <Label
-                    Text="Location"
+                    Text="{Static strings:AppResources.LabelText_Location}"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
                     FontSize="18"
                     VerticalOptions="CenterAndExpand"
@@ -311,7 +315,7 @@
 
                 </Frame>
                 <Label 
-                    Text="Undefined"
+                    Text="{Static strings:AppResources.LabelText_Undefined}"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
                     FontSize="18"
                     VerticalOptions="CenterAndExpand"

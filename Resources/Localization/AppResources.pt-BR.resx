@@ -117,20 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BiometricAuth_Reason" xml:space="preserve">
+    <value>Deixa eu verificar se você é você mesmo!</value>
+  </data>
+  <data name="BiometricAuth_Title" xml:space="preserve">
+    <value>Coloca o dedinho aqui</value>
+  </data>
+  <data name="BiometricCancelOptionText" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="DialogAuth_AccessDenied_Message" xml:space="preserve">
+    <value>Desculpe, você não é permitido aqui! Tchau!</value>
+  </data>
+  <data name="DialogAuth_AccessDenied_Title" xml:space="preserve">
+    <value>Acesso Negado</value>
+  </data>
+  <data name="DialogAuth_AccessGranted_Message" xml:space="preserve">
+    <value>Bem Vindo ao AlarmBLE</value>
+  </data>
+  <data name="DialogAuth_AccessGranted_Title" xml:space="preserve">
+    <value>Acesso Permitido</value>
+  </data>
   <data name="EmptyText_NoDevicesFound" xml:space="preserve">
     <value>Nenhum dispositivo encontrado</value>
   </data>
   <data name="EmptyText_NoPairedDevices" xml:space="preserve">
     <value>Nenhum dispositivo pareado</value>
   </data>
+  <data name="LabelStatus_Active" xml:space="preserve">
+    <value>Ativado</value>
+  </data>
+  <data name="LabelStatus_Inactive" xml:space="preserve">
+    <value>Desativado</value>
+  </data>
+  <data name="LabelText_ActivateAlarm" xml:space="preserve">
+    <value>Ativar Alarme</value>
+  </data>
   <data name="LabelText_AvailableDevices" xml:space="preserve">
     <value>Dispositivos Disponíveis</value>
+  </data>
+  <data name="LabelText_Beep" xml:space="preserve">
+    <value>Beep</value>
+  </data>
+  <data name="LabelText_Blink" xml:space="preserve">
+    <value>Piscas</value>
+  </data>
+  <data name="LabelText_DeactivateAlarm" xml:space="preserve">
+    <value>Desativar Alarme</value>
+  </data>
+  <data name="LabelText_Location" xml:space="preserve">
+    <value>Localização</value>
   </data>
   <data name="LabelText_PageDevelopmentInProgress" xml:space="preserve">
     <value>Desenvolvimento da página em andamento!</value>
   </data>
   <data name="LabelText_PairedDevices" xml:space="preserve">
     <value>Dispositivos Pareados</value>
+  </data>
+  <data name="LabelText_Undefined" xml:space="preserve">
+    <value>Indefinido</value>
   </data>
   <data name="MenuItem_About" xml:space="preserve">
     <value>Sobre</value>
@@ -149,5 +194,11 @@
   </data>
   <data name="NullValueText_Unknow" xml:space="preserve">
     <value>Desconhecido</value>
+  </data>
+  <data name="ToastText_AlreadyActive" xml:space="preserve">
+    <value>Já ativado</value>
+  </data>
+  <data name="ToastText_AlreadyInactive" xml:space="preserve">
+    <value>Já Desativado</value>
   </data>
 </root>

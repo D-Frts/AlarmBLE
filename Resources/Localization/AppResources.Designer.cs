@@ -61,6 +61,69 @@ namespace AlarmBle.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Let me check if you are really you!.
+        /// </summary>
+        internal static string BiometricAuth_Reason {
+            get {
+                return ResourceManager.GetString("BiometricAuth_Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put your finger here.
+        /// </summary>
+        internal static string BiometricAuth_Title {
+            get {
+                return ResourceManager.GetString("BiometricAuth_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        internal static string BiometricCancelOptionText {
+            get {
+                return ResourceManager.GetString("BiometricCancelOptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, you are not allowed here! Bye!.
+        /// </summary>
+        internal static string DialogAuth_AccessDenied_Message {
+            get {
+                return ResourceManager.GetString("DialogAuth_AccessDenied_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access Denied.
+        /// </summary>
+        internal static string DialogAuth_AccessDenied_Title {
+            get {
+                return ResourceManager.GetString("DialogAuth_AccessDenied_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to AlarmBLE.
+        /// </summary>
+        internal static string DialogAuth_AccessGranted_Message {
+            get {
+                return ResourceManager.GetString("DialogAuth_AccessGranted_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access Granted.
+        /// </summary>
+        internal static string DialogAuth_AccessGranted_Title {
+            get {
+                return ResourceManager.GetString("DialogAuth_AccessGranted_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No devices found.
         /// </summary>
         internal static string EmptyText_NoDevicesFound {
@@ -79,11 +142,74 @@ namespace AlarmBle.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string LabelStatus_Active {
+            get {
+                return ResourceManager.GetString("LabelStatus_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        internal static string LabelStatus_Inactive {
+            get {
+                return ResourceManager.GetString("LabelStatus_Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate Alarm.
+        /// </summary>
+        internal static string LabelText_ActivateAlarm {
+            get {
+                return ResourceManager.GetString("LabelText_ActivateAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available Devices.
         /// </summary>
         internal static string LabelText_AvailableDevices {
             get {
                 return ResourceManager.GetString("LabelText_AvailableDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beep.
+        /// </summary>
+        internal static string LabelText_Beep {
+            get {
+                return ResourceManager.GetString("LabelText_Beep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blink.
+        /// </summary>
+        internal static string LabelText_Blink {
+            get {
+                return ResourceManager.GetString("LabelText_Blink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deactivate Alarm.
+        /// </summary>
+        internal static string LabelText_DeactivateAlarm {
+            get {
+                return ResourceManager.GetString("LabelText_DeactivateAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        internal static string LabelText_Location {
+            get {
+                return ResourceManager.GetString("LabelText_Location", resourceCulture);
             }
         }
         
@@ -102,6 +228,15 @@ namespace AlarmBle.Resources.Localization {
         internal static string LabelText_PairedDevices {
             get {
                 return ResourceManager.GetString("LabelText_PairedDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined.
+        /// </summary>
+        internal static string LabelText_Undefined {
+            get {
+                return ResourceManager.GetString("LabelText_Undefined", resourceCulture);
             }
         }
         
@@ -156,6 +291,24 @@ namespace AlarmBle.Resources.Localization {
         internal static string NullValueText_Unknow {
             get {
                 return ResourceManager.GetString("NullValueText_Unknow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already active.
+        /// </summary>
+        internal static string ToastText_AlreadyActive {
+            get {
+                return ResourceManager.GetString("ToastText_AlreadyActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already inactive.
+        /// </summary>
+        internal static string ToastText_AlreadyInactive {
+            get {
+                return ResourceManager.GetString("ToastText_AlreadyInactive", resourceCulture);
             }
         }
     }

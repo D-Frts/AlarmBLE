@@ -1,16 +1,19 @@
 ﻿using AlarmBle.Model;
+using AlarmBle.Resources.Localization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.BLE.Abstractions.Contracts;
-using Plugin.BLE.Abstractions.EventArgs;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 
 namespace AlarmBle.ViewModel;
 
 
 public partial class MainPageViewModel : BaseViewModel
 {
-	static AppTheme currentTheme;
+	AppTheme currentTheme;
 	Timer timer;
+	IFingerprint fingerprint;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor( nameof( AlarmStateToggled ) )]
@@ -27,7 +30,9 @@ public partial class MainPageViewModel : BaseViewModel
 	static bool isMotoAnimated;
 	[ObservableProperty]
 	string statusAlarm;
-	public MainPageViewModel( IBluetoothLE bluetoothLE, IAdapter adapter ) : base( bluetoothLE, adapter )
+
+
+	public MainPageViewModel( IBluetoothLE bluetoothLE, IAdapter adapter, IFingerprint fingerprint ) : base( bluetoothLE, adapter )
 	{
 		Application.Current.RequestedThemeChanged += ( sender, args ) =>
 		{
@@ -35,11 +40,32 @@ public partial class MainPageViewModel : BaseViewModel
 			MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		};
 		currentTheme = Application.Current.RequestedTheme;
-		StatusAlarm = "Inactive";
+		StatusAlarm = AppResources.LabelStatus_Inactive;
 		MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		IsMotoAnimated = false;
 		BeepStateToggled = false;
 		BlinkStateToggled = false;
+		this.fingerprint = fingerprint;
+	}
+	[RelayCommand]
+	async Task Authenticate()
+	{
+		var request = new AuthenticationRequestConfiguration( AppResources.BiometricAuth_Title, AppResources.BiometricAuth_Reason )
+		{
+			CancelTitle = AppResources.BiometricCancelOptionText
+		};
+		var result = await fingerprint.AuthenticateAsync( request );
+		if ( result.Authenticated )
+		{
+			// do secret stuff :)
+			await Shell.Current.DisplayAlert( AppResources.DialogAuth_AccessGranted_Title, AppResources.DialogAuth_AccessGranted_Message, "OK" );
+		}
+		else
+		{
+			// not allowed to do secret stuff :(
+			await Shell.Current.DisplayAlert( AppResources.DialogAuth_AccessDenied_Title, AppResources.DialogAuth_AccessDenied_Message, "OK" );
+			Application.Current.Quit();
+		}
 	}
 
 	async Task GetAlarmState()
@@ -49,45 +75,49 @@ public partial class MainPageViewModel : BaseViewModel
 	}
 
 	[RelayCommand]
-	void ActivateAlarm()
+	async Task ActivateAlarm()
 	{
-		AlarmStateToggled = true;
-		StatusAlarm = "Active";
-		if ( BlinkStateToggled || BeepStateToggled )
+		if ( AlarmStateToggled )
 		{
-			if ( BlinkStateToggled && BeepStateToggled )
-			{
-				MotoAnimation( "moto_beep_blink" );
-			}
-			else if ( BlinkStateToggled && !BeepStateToggled )
-			{
-				MotoAnimation( "moto_blink" );
-			}
-			else if ( !BlinkStateToggled && BeepStateToggled )
-			{
-				MotoAnimation( "moto_beep" );
-			}
+			await OnToastAsync( AppResources.ToastText_AlreadyActive );
+			return;
 		}
+		AlarmStateToggled = true;
+		StatusAlarm = AppResources.LabelStatus_Active;
+		AnimateConfigurations( currentTheme, BeepStateToggled, BlinkStateToggled );
 	}
 
 	[RelayCommand]
-	void DeactivateAlarm()
+	async Task DeactivateAlarm()
 	{
-		AlarmStateToggled = false;
-		StatusAlarm = "Inactive";
-		if ( BlinkStateToggled || BeepStateToggled )
+		if ( !AlarmStateToggled )
 		{
-			if ( BlinkStateToggled && BeepStateToggled )
+			await OnToastAsync( AppResources.ToastText_AlreadyInactive );
+			return;
+		}
+		AlarmStateToggled = false;
+		StatusAlarm = AppResources.LabelStatus_Inactive;
+		AnimateConfigurations( currentTheme, BeepStateToggled, BlinkStateToggled, 2 );
+	}
+
+	void AnimateConfigurations(AppTheme theme, bool beep, bool blink, int reapeat = 1 )
+	{
+		if ( blink || beep )
+		{
+			if ( blink && beep )
 			{
-				MotoAnimation( "moto_beep_blink", 2 );
+				MotoAnimation( theme, "moto_beep_blink", reapeat );
+				return;
 			}
-			else if ( BlinkStateToggled && !BeepStateToggled )
+			else if ( blink && !beep )
 			{
-				MotoAnimation( "moto_blink", 2 );
+				MotoAnimation( theme, "moto_blink", reapeat );
+				return;
 			}
-			else if ( !BlinkStateToggled && BeepStateToggled )
+			else if ( !blink && beep )
 			{
-				MotoAnimation( "moto_beep", 2 );
+				MotoAnimation( theme, "moto_beep", reapeat );
+				return;
 			}
 		}
 	}
@@ -97,7 +127,7 @@ public partial class MainPageViewModel : BaseViewModel
 	{
 		BeepStateToggled = !BeepStateToggled;
 		if ( BeepStateToggled )
-			MotoAnimation( "moto_beep" );
+			MotoAnimation( currentTheme, "moto_beep", 1 );
 	}
 
 	[RelayCommand]
@@ -105,22 +135,26 @@ public partial class MainPageViewModel : BaseViewModel
 	{
 		BlinkStateToggled = !BlinkStateToggled;
 		if ( BlinkStateToggled )
-			MotoAnimation("moto_blink");
+			MotoAnimation( currentTheme, "moto_blink", 1 );
 
 
 	}
-	void MotoAnimation(string animation, int iteration = 1)
+	void MotoAnimation( AppTheme theme, string animation, int reapeat = -1 )
 	{
-		MotoImage = currentTheme is AppTheme.Light ? animation + "_light.gif" : animation + "_dark.gif";
+		MotoImage = theme is AppTheme.Light ? animation + "_light.gif" : animation + "_dark.gif";
 		IsMotoAnimated = true;
-		if (iteration != 0)
-			timer = new( ResetAnimation, null, iteration*500, Timeout.Infinite );
+		if ( reapeat == -1 )
+			return;
+		if ( reapeat > 0 )
+			timer = new( ResetAnimation, theme, reapeat * 500, Timeout.Infinite );
+
 	}
 
 	void ResetAnimation( object state )
 	{
+		var appTheme = (AppTheme) state;
 		IsMotoAnimated = false;
-		MotoImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
+		MotoImage = appTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		timer?.Dispose();
 	}
 

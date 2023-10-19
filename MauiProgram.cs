@@ -4,7 +4,8 @@ using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
-using SkiaSharp.Views.Maui.Controls.Hosting;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 
 namespace AlarmBle
 {
@@ -16,7 +17,6 @@ namespace AlarmBle
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
-                .UseSkiaSharp()
                 .ConfigureFonts( fonts =>
                 {
                     fonts.AddFont( "OpenSans-Regular.ttf", "OpenSansRegular" );
@@ -28,6 +28,7 @@ namespace AlarmBle
 #endif
             builder.Services.AddSingleton<IBluetoothLE>( CrossBluetoothLE.Current );
             builder.Services.AddSingleton<IAdapter>( CrossBluetoothLE.Current.Adapter );
+            builder.Services.AddSingleton<IFingerprint>( CrossFingerprint.Current );
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<ScannerPage>();

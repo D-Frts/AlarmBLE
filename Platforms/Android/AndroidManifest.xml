@@ -16,6 +16,7 @@
 	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" />
 	<uses-permission android:name="android.permission.LOCATION_HARDWARE" />
+	<uses-permission android:name="android.permission.USE_FINGERPRINT" />
 	<uses-feature android:name="android.permission.BLUETOOTH_LE" android:required="false" />
 	<uses-sdk android:minSdkVersion="26" android:targetSdkVersion="33" />
 </manifest>
