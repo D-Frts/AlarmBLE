@@ -66,11 +66,11 @@
         <!--Primeira linha: ilustração de motocicleta animada-->
         <Image 
             Grid.ColumnSpan="2" 
-            Source="{Binding MotoImage}"
+            Source="{Binding BikeImage}"
             HeightRequest="300"
             HorizontalOptions="CenterAndExpand"
             VerticalOptions="CenterAndExpand"            
-            IsAnimationPlaying="{Binding IsMotoAnimated}"
+            IsAnimationPlaying="{Binding IsBikeAnimated}"
             />
         <!--Segunda linha: botoes de ativar e desativar o alarme-->
         <VerticalStackLayout
