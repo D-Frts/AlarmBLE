@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit ="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:extensions="clr-namespace:AlarmBle.Extensions"
+             xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+             xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
+             x:Class="AlarmBle.View.ChangePasskeyPage"
+             x:DataType="viewmodel:ChangePasskeyViewModel"
+             Title="{extensions:Translate AlarmSettingsLabel_ChangePasskey}">
+    <VerticalStackLayout
+        Padding="10"
+        Spacing="50"
+        >
+        <VerticalStackLayout Spacing="25">
+            <Label 
+                Text="{extensions:Translate ChangePasskeyLabel_CurrentPasskey}"
+                Style="{StaticResource SmallLabel}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="StartAndExpand" />
+            <HorizontalStackLayout 
+                Spacing="10">
+                <Entry
+                    IsReadOnly="True"
+                    Text="{Binding CurrentPasskeyDisplay}"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="StartAndExpand"
+                    HeightRequest="50"
+                    WidthRequest="200"
+                    CharacterSpacing="10"
+                    FontSize="32" 
+                    ClearButtonVisibility="WhileEditing" 
+                    Keyboard="Numeric"/>
+
+                <ImageButton 
+                    Source="{AppThemeBinding Light=novisible_light.png, Dark=novisible_dark.png}" 
+                    Command="{Binding TogglePasswordVisibilityCommand}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="LockVisualStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter 
+                                        Property="Scale" 
+                                        Value="1"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter 
+                                        Property="Scale" 
+                                        Value="0.9"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <ImageButton.Triggers>
+                        <DataTrigger 
+                            TargetType="ImageButton" 
+                            Binding="{Binding IsPassoword}"
+                            Value="True">
+                            <Setter 
+                                Property="Source" 
+                                Value="{AppThemeBinding Light=visible_light.png, Dark=visible_dark.png}"/>
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+
+                </ImageButton>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Spacing="25">
+            <Label 
+                Text="{extensions:Translate ChangePasskeyLabel_NewPasskey}"
+                Style="{StaticResource SmallLabel}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="StartAndExpand" />
+            <Entry
+                Text="{Binding NewPasskey}"
+                TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="StartAndExpand"
+                HeightRequest="50"
+                WidthRequest="200"
+                CharacterSpacing="5"
+                FontSize="32" 
+                ClearButtonVisibility="WhileEditing" 
+                Keyboard="Numeric"
+                MaxLength="6" 
+                ReturnCommand="{Binding SaveNewPasskeyCommand}"/>
+        </VerticalStackLayout>
+        <VerticalStackLayout>
+            <Button
+                Command="{Binding SaveNewPasskeyCommand}"
+                Style="{StaticResource ButtonFilled}"
+                IsVisible="False"
+                Text="{extensions:Translate ChangePasskeyButton_SavePasskey}"
+                FontSize="Large"
+                WidthRequest="300"
+                Margin="0,40">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding NewPasskey.Length}" Value="6">
+                        <Setter Property="IsVisible" Value="True"/>
+                    </DataTrigger>
+
+                </Button.Triggers>
+            </Button>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

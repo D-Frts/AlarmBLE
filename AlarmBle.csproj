@@ -47,20 +47,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\battery2_dark.svg" />
-	  <None Remove="Resources\Images\battery2_lght.svg" />
-	  <None Remove="Resources\Images\car_battery_dark.svg" />
-	  <None Remove="Resources\Images\car_battery_icon.jpg" />
-	  <None Remove="Resources\Images\device_ble_dark.svg" />
-	  <None Remove="Resources\Images\device_ble_light.svg" />
-	  <None Remove="Resources\Images\off_switch_dark.png" />
-	  <None Remove="Resources\Images\off_switch_light.png" />
-	  <None Remove="Resources\Images\on_switch_dark.png" />
-	  <None Remove="Resources\Images\on_switch_light.png" />
-	  <None Remove="Resources\Images\power_btn_off.svg" />
-	  <None Remove="Resources\Images\power_btn_on.svg" />
-	  <None Remove="Resources\Raw\moto_beep_dark.json" />
-	  <None Remove="Resources\Raw\moto_beep_light.json" />
+	  <None Remove="Platforms\Android\Resources\values-night\colors.xml" />
+	  <None Remove="Resources\Images\biometrics_dark.svg" />
+	  <None Remove="Resources\Images\biometrics_light.svg" />
+	  <None Remove="Resources\Images\novisible_dark.svg" />
+	  <None Remove="Resources\Images\novisible_light.svg" />
+	  <None Remove="Resources\Images\password_dark.svg" />
+	  <None Remove="Resources\Images\password_light.svg" />
+	  <None Remove="Resources\Images\visible_dark.svg" />
+	  <None Remove="Resources\Images\visible_light.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -77,6 +72,9 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>AppResources.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="View\ChangePasskeyPage.xaml.cs">
+	    <DependentUpon>ChangePasskeyPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -90,6 +88,21 @@
 	  <PackageReference Include="Xamarin.AndroidX.Migration">
 	    <Version>1.0.10</Version>
 	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="View\AlarmSettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AppSettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\ChangePasskeyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

@@ -21,6 +21,7 @@
             <Color x:Key="DarkBackground">#001220</Color>
             <Color x:Key="White">White</Color>
             <Color x:Key="Black">Black</Color>
+            <Color x:Key="Gray50">#FEFEFE</Color>
             <Color x:Key="Gray100">#E1E1E1</Color>
             <Color x:Key="Gray200">#C8C8C8</Color>
             <Color x:Key="Gray300">#ACACAC</Color>
@@ -30,22 +31,25 @@
             <Color x:Key="Gray900">#212121</Color>
             <Color x:Key="Gray950">#141414</Color>
 
-
             <Style ApplyToDerivedTypes="True" TargetType="Page">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}"/>
             </Style>
 
             <Style TargetType="Label" x:Key="BaseLabel">
                 <Setter Property="FontFamily" Value="OpenSansRegular" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource Gray100}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray100}}" />
             </Style>
 
             <Style x:Key="MicroLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
                 <Setter Property="FontSize" Value="10"/>
             </Style>
 
-            <Style x:Key="SmallLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+            <Style x:Key="MinilLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
                 <Setter Property="FontSize" Value="12"/>
+            </Style>
+            
+            <Style x:Key="SmallLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
             </Style>
 
             <Style x:Key="MediumLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
@@ -66,7 +70,16 @@
 
             <Style x:Key="ButtonOutline" TargetType="Button">
                 <Setter Property="Background" Value="{StaticResource LightBackground}" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark=White}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="CornerRadius" Value="20" />
+            </Style>
+            
+            <Style x:Key="ButtonFilled" TargetType="Button">
+                <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Primary }, Dark={StaticResource DarkBackground}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource PrimaryLight}}" />
                 <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}" />
                 <Setter Property="BorderWidth" Value="2" />
                 <Setter Property="HeightRequest" Value="40" />
@@ -88,7 +101,7 @@
             </Style>
 
             <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryDark}" />
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource DarkBackground}}" />
                 <Setter Property="Shell.ForegroundColor" Value="{OnPlatform WinUI={StaticResource Primary}, Default=White}" />
                 <Setter Property="Shell.TitleColor" Value="White" />
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
@@ -96,8 +109,36 @@
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource DarkBackground}, Light={StaticResource LightBackground}}" />
                 <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource LightBackground}, Light={StaticResource DarkBackground}}" />
                 <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark=#95FFFFFF, Light=#95000000}" />
-                <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource LightBackground}, Light={StaticResource DarkBackground}}" />
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource White}" />
             </Style>
+            
+            <Style x:Key="HomeIcon" TargetType="FlyoutItem">
+                <Setter Property="Icon" Value="{AppThemeBinding Light=home_light.png, Dark=home_dark.png}"/>
+            </Style>
+
+            <Style x:Key="InvertedSlider" TargetType="Slider">
+                <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}"/>
+                <Setter Property="MaximumTrackColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryLight}}"/>
+                <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+
+            </Style>
+
+            <Style x:Key="HorizontalLine" TargetType="Line">
+                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                <Setter Property="StrokeThickness" Value="0.7"/>
+                <Setter Property="Opacity" Value="0.15"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HeightRequest" Value="0"/>
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                
+            </Style>
+
+            <Style x:Key="BaseSwitch" TargetType="Switch">
+                <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                <Setter Property="OnColor" Value="#ACFFFF"/>
+
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

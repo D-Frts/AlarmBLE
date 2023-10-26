@@ -5,13 +5,17 @@
              xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+             xmlns:extensions="clr-namespace:AlarmBle.Extensions"
              x:Class="AlarmBle.View.MainPage"
              x:DataType="viewmodel:MainPageViewModel"
-             Title="{Static strings:AppResources.MenuItem_Home}">
+             Title="{extensions:Translate MenuItem_Home}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior 
             EventName="Loaded"
             Command="{Binding AuthenticateCommand}"/>
+        <toolkit:EventToCommandBehavior 
+            EventName="Appearing" 
+            Command="{Binding GetCharacteristicsStateCommand}"/>
     </ContentPage.Behaviors>
 
     <Grid 
@@ -23,7 +27,8 @@
         <VerticalStackLayout 
             Grid.Column="1"
             HorizontalOptions="CenterAndExpand"
-            VerticalOptions="CenterAndExpand">
+            VerticalOptions="CenterAndExpand" 
+            Spacing="10">
             <VerticalStackLayout>
                 <Image
                     x:Name="statusIcon"
@@ -41,15 +46,16 @@
                         </DataTrigger>
                     </Image.Triggers>
                 </Image>
-                <Label
+                <!--<Label
                     x:Name="statusLabel"
                     Text="{Binding StatusAlarm}"
                     FontSize="12"
                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
                     VerticalOptions="CenterAndExpand"
-                    HorizontalOptions="CenterAndExpand"/>
+                    HorizontalOptions="CenterAndExpand"/>-->
             </VerticalStackLayout>
-            <VerticalStackLayout>
+            <VerticalStackLayout
+                Spacing="5">
                 <Image             
                      Source="{AppThemeBinding Light=battery2_light.png, Dark=battery2_dark.png}"
                      VerticalOptions="CenterAndExpand"
@@ -57,8 +63,7 @@
                      HeightRequest="40"/>
                 <Label 
                      Text="100%"
-                     FontSize="16"
-                     TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
+                     Style="{StaticResource MinilLabel}"
                      VerticalOptions="CenterAndExpand"
                      HorizontalOptions="CenterAndExpand"/>
             </VerticalStackLayout>
@@ -108,8 +113,8 @@
                         </VisualStateManager.VisualStateGroups>
                     </ImageButton>
                     <Line
-                    Y2="200"
-                    Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                        Y2="200"
+                        Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
                     <ImageButton 
                         Source="{AppThemeBinding Light=lock_open_light.png, Dark=lock_open_dark.png}"
                         VerticalOptions="CenterAndExpand"
@@ -137,13 +142,11 @@
                 HorizontalOptions="CenterAndExpand"
                 Spacing="50">
                 <Label 
-                    Text="{Static strings:AppResources.LabelText_ActivateAlarm}"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                    Text="{extensions:Translate LabelText_ActivateAlarm}"
+                    Style="{StaticResource MediumLabel}"/>
                 <Label 
-                    Text="{Static strings:AppResources.LabelText_DeactivateAlarm}"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                    Text="{extensions:Translate LabelText_DeactivateAlarm}"
+                    Style="{StaticResource MediumLabel}"/>
             </HorizontalStackLayout>
         </VerticalStackLayout>
         <!--Terceira linha: botoes de ativar e desativar aviso sonoro e luminoso-->
@@ -230,13 +233,11 @@
                 HorizontalOptions="CenterAndExpand"
                 Spacing="120">
                 <Label 
-                    Text="{Static strings:AppResources.LabelText_Beep}"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                    Text="{extensions:Translate LabelText_Beep}"
+                    Style="{StaticResource MediumLabel}"/>
                 <Label 
-                    Text="{Static strings:AppResources.LabelText_Blink}"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"/>
+                    Text="{extensions:Translate LabelText_Blink}"
+                    Style="{StaticResource MediumLabel}"/>
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
@@ -278,9 +279,8 @@
 
                 </Frame>
                 <Label
-                    Text="{Static strings:AppResources.LabelText_Location}"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
-                    FontSize="18"
+                    Text="{extensions:Translate LabelText_Location}"
+                    Style="{StaticResource MediumLabel}"
                     VerticalOptions="CenterAndExpand"
                     HorizontalOptions="CenterAndExpand"/>
             </VerticalStackLayout>
@@ -315,13 +315,18 @@
 
                 </Frame>
                 <Label 
-                    Text="{Static strings:AppResources.LabelText_Undefined}"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryLight}}"
-                    FontSize="18"
+                    Text="{extensions:Translate LabelText_Undefined}"
+                    Style="{StaticResource MediumLabel}"
                     VerticalOptions="CenterAndExpand"
                     HorizontalOptions="CenterAndExpand"/>
             </VerticalStackLayout>
         </HorizontalStackLayout>
+        <ActivityIndicator 
+            Grid.ColumnSpan="2" 
+            Grid.RowSpan="4"
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
     </Grid>
 
 </ContentPage>

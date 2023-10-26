@@ -21,15 +21,6 @@ public partial class BaseViewModel : ObservableObject
         GetBondedDevices( AlarmServiceUuids.AlarmService );
     }
 
-    void GetBondedDevices( string service = null )
-    {
-        var bondedDevices = Adapter.GetSystemConnectedOrPairedDevices( new[ ] { new Guid( AlarmServiceUuids.AlarmService ) } );
-        foreach ( var device in bondedDevices )
-        {
-            BondedDevices?.Add( new BleDevice( device ) );
-        }
-    }
-
     [ObservableProperty]
     [NotifyPropertyChangedFor( nameof( IsNotBusy ) )]
     bool isBusy;
@@ -47,7 +38,9 @@ public partial class BaseViewModel : ObservableObject
     bool isBonded;
     [ObservableProperty]
     int scanTimeout = 5000;
-    public ObservableCollection<BleDevice> DiscoveredDevices { get; set; } = new();
+	[ObservableProperty]
+	bool isBiometrics;
+	public ObservableCollection<BleDevice> DiscoveredDevices { get; set; } = new();
     public ObservableCollection<BleDevice> BondedDevices { get; set; } = new();
 
     [ObservableProperty]
@@ -144,6 +137,7 @@ public partial class BaseViewModel : ObservableObject
             Adapter.DeviceConnected += ( sender, args ) =>
             {
                 IsConnected = true;
+                RemoteDevice = new( args.Device );
             };
             ConnectParameters param = new( autoConnect: true );
             await Adapter.ConnectToDeviceAsync( device.Device, param );
@@ -246,10 +240,10 @@ public partial class BaseViewModel : ObservableObject
     public virtual async Task<object> GetRemoteCharacteriticValue(ICharacteristic characteristic )
     {        
 
-        if ( characteristic.Uuid.Equals( AlarmServiceUuids.SensorSensibility ) || characteristic.Uuid.Equals( AlarmServiceUuids.Passkey ) )
-        {
-            return await Task.FromResult( BitConverter.ToInt32( characteristic.Value, 0 ) );
-        }
+        if ( characteristic.Uuid.Equals( 
+            AlarmServiceUuids.SensorSensibility ) || 
+            characteristic.Uuid.Equals( AlarmServiceUuids.Passkey ) )
+            return await Task.FromResult( BitConverter.ToInt32( characteristic.Value, 0 ) );        
         else
             return await Task.FromResult( BitConverter.ToBoolean( characteristic.Value, 0 ) );
         
@@ -278,5 +272,14 @@ public partial class BaseViewModel : ObservableObject
         await toast.Show( cancellationTokenSource.Token );
 
     }
+	void GetBondedDevices( string service = null )
+	{
+		var bondedDevices = Adapter.GetSystemConnectedOrPairedDevices( new[ ] { new Guid( AlarmServiceUuids.AlarmService ) } );
+		foreach ( var device in bondedDevices )
+		{
+			BondedDevices?.Add( new BleDevice( device ) );
+		}
+	}
+
 
 }

@@ -7,9 +7,17 @@
     xmlns:local="clr-namespace:AlarmBle"
     xmlns:views="clr-namespace:AlarmBle.View"
     xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+    xmlns:extensions="clr-namespace:AlarmBle.Extensions"
+    x:DataType="local:AppShell"
     Shell.TabBarIsVisible="False"
+    Shell.FlyoutBehavior="Flyout"
     Style="{StaticResource BaseStyle}">
 
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior 
+            StatusBarColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+    </Shell.Behaviors>
+    
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
             <Grid 
@@ -21,32 +29,41 @@
             </Grid>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
+        
     <FlyoutItem 
         FlyoutDisplayOptions="AsMultipleItems">
-
         <ShellContent 
-            Title="{x:Static strings:AppResources.MenuItem_Home}" 
-            Icon="{AppThemeBinding Light=home_light.png, Dark=home_dark.png}" 
+            Title="{extensions:Translate MenuItem_Home}" 
+            Icon="{x:AppThemeBinding Light=home_light.png, Dark=home_dark.png }" 
             ContentTemplate="{DataTemplate views:MainPage}"
             Route="MainPage" />
         <ShellContent 
-            Title="{x:Static strings:AppResources.MenuItem_AddDevice}" 
-            Icon="{AppThemeBinding Light=add_light.png, Dark=add_dark.png}"
+            Title="{extensions:Translate MenuItem_AddDevice}" 
+            Icon="{x:AppThemeBinding Light=add_light.png, Dark=add_dark.png }"
             ContentTemplate="{DataTemplate views:ScannerPage}"
             Route="ScannerPage" />
-        <ShellContent 
-            Title="{x:Static strings:AppResources.MenuItem_Settings}" 
-            Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png}"
-            ContentTemplate="{DataTemplate views:DeviceSettingsPage}"
-            Route="DeviceSettingsPage" />
+        <Tab            
+            Title="{extensions:Translate MenuItem_Settings}"
+            Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png }">
+            <ShellContent
+                Shell.UnselectedColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray400}}"
+                Title="{extensions:Translate TabName_AppSettings}" 
+                ContentTemplate="{DataTemplate views:AppSettingsPage}"
+                Route="AppSettingsPage"/>
+            <ShellContent 
+                Shell.UnselectedColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray400}}"
+                Title="{extensions:Translate TabName_AlarmSettings}" 
+                ContentTemplate="{DataTemplate views:AlarmSettingsPage}"
+                Route="AlarmSettingsPage"/>
+        </Tab>      
 
     </FlyoutItem>
-    
+
     <MenuItem 
-        Text="{Static strings:AppResources.MenuItem_About}"
-        IconImageSource="{AppThemeBinding Light=info_light.png, Dark=info_dark.png}"/>
+        Text="{extensions:Translate MenuItem_About}"
+        IconImageSource="{x:AppThemeBinding Light=info_light.png, Dark=info_dark.png}"/>
     <MenuItem 
-        Text="{Static strings:AppResources.MenuItem_Help}"
-        IconImageSource="{AppThemeBinding Light=help_light.png, Dark=help_dark.png}"/>
+        Text="{extensions:Translate MenuItem_Help}"
+        IconImageSource="{x:AppThemeBinding Light=help_light.png, Dark=help_dark.png}"/>
 
 </Shell>

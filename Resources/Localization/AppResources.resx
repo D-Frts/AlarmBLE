@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlarmSettingsLabel_AssaultMode" xml:space="preserve">
+    <value>Assault Mode</value>
+  </data>
+  <data name="AlarmSettingsLabel_ChangePasskey" xml:space="preserve">
+    <value>Change Passkey</value>
+  </data>
+  <data name="AlarmSettingsLabel_MovementSensor" xml:space="preserve">
+    <value>Movement Sensor</value>
+  </data>
+  <data name="AlarmSettingsLabel_PresenceMode" xml:space="preserve">
+    <value>Presence Mode</value>
+  </data>
+  <data name="AlarmSettingsLabel_Sensibility" xml:space="preserve">
+    <value>Sensibilidade</value>
+  </data>
+  <data name="AppSettings_AppLanguage" xml:space="preserve">
+    <value>App Language</value>
+  </data>
+  <data name="AppSettings_Biometrics" xml:space="preserve">
+    <value>Use biometrics to enter in the app</value>
+  </data>
   <data name="BiometricAuth_Reason" xml:space="preserve">
     <value>Let me check if you are really you!</value>
   </data>
@@ -125,6 +146,18 @@
   </data>
   <data name="BiometricCancelOptionText" xml:space="preserve">
     <value>Quit</value>
+  </data>
+  <data name="CancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChangePasskeyButton_SavePasskey" xml:space="preserve">
+    <value>Save Passkey</value>
+  </data>
+  <data name="ChangePasskeyLabel_CurrentPasskey" xml:space="preserve">
+    <value>Current Passkey</value>
+  </data>
+  <data name="ChangePasskeyLabel_NewPasskey" xml:space="preserve">
+    <value>New Passkey</value>
   </data>
   <data name="DialogAuth_AccessDenied_Message" xml:space="preserve">
     <value>Sorry, you are not allowed here! Bye!</value>
@@ -137,6 +170,39 @@
   </data>
   <data name="DialogAuth_AccessGranted_Title" xml:space="preserve">
     <value>Access Granted</value>
+  </data>
+  <data name="DialogButtonText_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DialogButtonText_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="DialogConnection_Message" xml:space="preserve">
+    <value>Would you like to connect to remote device?</value>
+  </data>
+  <data name="DialogConnection_Title" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
+  <data name="DialogLanguage_OptionEnUS" xml:space="preserve">
+    <value>English USA</value>
+  </data>
+  <data name="DialogLanguage_OptionPtBR" xml:space="preserve">
+    <value>Português Brasil</value>
+  </data>
+  <data name="DialogLanguage_Title" xml:space="preserve">
+    <value>Choose the app language</value>
+  </data>
+  <data name="DialogTheme_OptionDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="DialogTheme_OptionLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="DialogTheme_OptionSystem" xml:space="preserve">
+    <value>System (Default)</value>
+  </data>
+  <data name="DialogTheme_Title" xml:space="preserve">
+    <value>Choose the app theme</value>
   </data>
   <data name="EmptyText_NoDevicesFound" xml:space="preserve">
     <value>No devices found</value>
@@ -194,6 +260,12 @@
   </data>
   <data name="NullValueText_Unknow" xml:space="preserve">
     <value>Unknow</value>
+  </data>
+  <data name="TabName_AlarmSettings" xml:space="preserve">
+    <value>Alarm Settings</value>
+  </data>
+  <data name="TabName_AppSettings" xml:space="preserve">
+    <value>App Settings</value>
   </data>
   <data name="ToastText_AlreadyActive" xml:space="preserve">
     <value>Already active</value>

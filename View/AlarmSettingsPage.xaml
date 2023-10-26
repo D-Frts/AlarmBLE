@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
+             xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+             xmlns:extensions="clr-namespace:AlarmBle.Extensions"
+             x:Class="AlarmBle.View.AlarmSettingsPage"
+             x:DataType="viewmodel:AlarmSettingsViewModel"
+             Title="{extensions:Translate MenuItem_Settings}" >
+    <ScrollView
+        Padding="10, 20, 0, 10">
+
+        <VerticalStackLayout 
+            Spacing="15">
+
+            <!--Componente que desenha a configuração de modo de presença-->
+            <VerticalStackLayout 
+                Spacing="15">
+                <Grid 
+                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnSpacing="25"
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand">
+                    <Image 
+                        Source="{AppThemeBinding Light=build_light.png, Dark=build_dark.png}"
+                        HorizontalOptions="CenterAndExpand"
+                        Aspect="AspectFit"/>
+                    <Label 
+                        Grid.Column="1"
+                        Text="{extensions:Translate AlarmSettingsLabel_PresenceMode}"
+                        Style="{StaticResource LargeLabel}"
+                        VerticalOptions="CenterAndExpand">
+                    </Label>
+                    <Switch
+                        x:Name="PresenceModeSwitch"
+                        Grid.Column="2"
+                        Style="{StaticResource BaseSwitch}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center" >
+                        <!--<Switch.Behaviors>
+                            <toolkit:EventToCommandBehavior 
+                                x:TypeArguments="ToggledEventArgs"
+                                EventName="Toggled"
+                                Command="{Binding SetAppBiometricsCommand}"/>
+                        </Switch.Behaviors>-->
+                    </Switch>
+                </Grid>
+                <Line
+                    X1="350"
+                    Style="{StaticResource HorizontalLine}"/>
+            </VerticalStackLayout>
+            <!--Componente que desenha a configuração mode de assaulto-->
+            <VerticalStackLayout 
+                Spacing="15">
+                <Grid 
+                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnSpacing="25"
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand">
+                    <Image 
+                        Source="{AppThemeBinding Light=build_light.png, Dark=build_dark.png}"
+                        HorizontalOptions="CenterAndExpand"
+                        Aspect="AspectFit"/>
+                    <Label 
+                        Grid.Column="1"
+                        Text="{extensions:Translate AlarmSettingsLabel_AssaultMode}"
+                        Style="{StaticResource LargeLabel}"
+                        VerticalOptions="CenterAndExpand"/>
+                    <Switch
+                        IsEnabled="{Binding Source={x:Reference PresenceModeSwitch},Path=IsToggled}"
+                        Grid.Column="2"
+                        Style="{StaticResource BaseSwitch}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center">
+                        <!--<Switch.Behaviors>
+                            <toolkit:EventToCommandBehavior 
+                                x:TypeArguments="ToggledEventArgs"
+                                EventName="Toggled"
+                                Command="{Binding SetAppBiometricsCommand}"/>
+                        </Switch.Behaviors>-->
+                    </Switch>
+
+                </Grid>
+                <Line
+                    X1="350"
+                    Style="{StaticResource HorizontalLine}"/>
+            </VerticalStackLayout>
+            <!--Componente que desenha a configuração para alterar a sensibilidade do sensor de movimento-->
+            <VerticalStackLayout 
+                Spacing="5">
+                <Grid 
+                    ColumnDefinitions="Auto,*,Auto"
+                    RowDefinitions="Auto,Auto,*"
+                    ColumnSpacing="25"
+                    RowSpacing="10"
+                    HeightRequest="150"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Image 
+                        Source="{AppThemeBinding Light=device_light.png, Dark=device_dark.png}"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        Aspect="AspectFit"/>
+
+                    <Label 
+                        Grid.Column="1"
+                        Text="{extensions:Translate AlarmSettingsLabel_MovementSensor}"
+                        Style="{StaticResource LargeLabel}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="StartAndExpand"/>
+                    <Switch
+                        x:Name="SensorSwitch"
+                        Grid.Column="2"
+                        Style="{StaticResource BaseSwitch}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="StartAndExpand">
+                        <!--<Switch.Behaviors>
+                             <toolkit:EventToCommandBehavior 
+                                 x:TypeArguments="ToggledEventArgs"
+                                 EventName="Toggled"
+                                 Command="{Binding SetAppBiometricsCommand}"/>
+                         </Switch.Behaviors>-->
+                    </Switch>
+                    <Label 
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{extensions:Translate AlarmSettingsLabel_Sensibility}"
+                        Style="{StaticResource MediumLabel}"
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="StartAndExpand"/>
+
+                    <VerticalStackLayout
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Spacing="5"
+                        Padding="50,0" >
+                        
+                        <Grid 
+                            ColumnDefinitions="*,*,*"
+                            HorizontalOptions="FillAndExpand">
+                            <Label 
+                                Grid.Column="0"
+                                Text="Max"
+                                Style="{StaticResource MinilLabel}"
+                                HorizontalOptions="Start"/>
+                            <Label 
+                                Grid.Column="1"
+                                Text="Med"
+                                Style="{StaticResource MinilLabel}"
+                                HorizontalOptions="Center"/>
+                            <Label 
+                                Grid.Column="2"
+                                Text="Min"
+                                Style="{StaticResource MinilLabel}"
+                                HorizontalOptions="End"/>
+                        </Grid>
+                        <Slider
+                            IsEnabled="{Binding Source={x:Reference SensorSwitch}, Path=IsToggled}"
+                            Maximum="60"
+                            Minimum="20"       
+                            Value="{Binding SliderValue, Mode=TwoWay}"
+                            DragCompletedCommand="{Binding ChangeSliderValueCommand}"
+                            Style="{StaticResource InvertedSlider}">
+
+                            <Slider.Behaviors>
+                                <toolkit:EventToCommandBehavior 
+                                    x:TypeArguments="ValueChangedEventArgs"
+                                    EventName="ValueChanged"
+                                    Command="{Binding SliderStepperCommand}"/>
+                            </Slider.Behaviors>
+                        </Slider>
+
+                    </VerticalStackLayout>
+
+                </Grid>
+                <Line
+                    X1="350"
+                    Style="{StaticResource HorizontalLine}"
+                    />
+            </VerticalStackLayout>
+            <!--Componente que desenha a configuração para alterar o Passkey-->
+            <VerticalStackLayout 
+                Spacing="15">
+                <Grid                    
+                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnSpacing="25"
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Image 
+                        Source="{AppThemeBinding Light=key_light.png, Dark=key_dark.png}"
+                        HorizontalOptions="CenterAndExpand"
+                        Aspect="AspectFit"/>
+                    <Label 
+                        Grid.Column="1"
+                        Text="{extensions:Translate AlarmSettingsLabel_ChangePasskey}"
+                        Style="{StaticResource LargeLabel}"
+                        VerticalOptions="CenterAndExpand">
+                    </Label>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToChangePasskeyPageCommand}"/>
+                    </Grid.GestureRecognizers>
+
+                </Grid>
+                <Line
+                    X1="350"
+                    Style="{StaticResource HorizontalLine}"/>
+            </VerticalStackLayout>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

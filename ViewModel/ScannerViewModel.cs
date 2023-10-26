@@ -33,11 +33,11 @@ public partial class ScannerViewModel : BaseViewModel
         }
         //await DisplayAlert( $"Make Connection to device: {device.Device.Name}" );
         await ConnectToDevice( device );
-        if ( IsNotBonded )
+        //if ( IsNotBonded )
             await BondToDevice( device );
         if ( IsConnected && IsBonded )
         {
-			await NavigateTo( nameof(MainPage) );
+			await NavigateTo( nameof(MainPage), device );
         }
     }
     static async Task DisplayAlert( string message )
@@ -45,8 +45,13 @@ public partial class ScannerViewModel : BaseViewModel
         await Shell.Current.DisplayAlert( string.Empty, message, "OK" );
 
     }
-    static async Task NavigateTo(string page )
+    static async Task NavigateTo(string page, BleDevice device )
     {
-        await Shell.Current.GoToAsync( page, true );
+        await Shell.Current.GoToAsync( $"//{page}", true, new Dictionary<string, object>()
+        {
+
+            { "RemoteDevice", device }
+
+        } );
     }
 }

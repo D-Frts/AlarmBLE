@@ -1,14 +1,18 @@
-﻿using AlarmBle.Model;
+﻿using AlarmBle.Extensions;
+using AlarmBle.Model;
 using AlarmBle.Resources.Localization;
+using AlarmBle.View;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.BLE.Abstractions.Contracts;
+using Plugin.BLE.Abstractions.EventArgs;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
+using System.Globalization;
 
 namespace AlarmBle.ViewModel;
 
-
+[QueryProperty("RemoteDevice", "RemoteDevice")]
 public partial class MainPageViewModel : BaseViewModel
 {
 	AppTheme currentTheme;
@@ -20,37 +24,54 @@ public partial class MainPageViewModel : BaseViewModel
 	ICharacteristic alarmState;
 	[ObservableProperty]
 	bool alarmStateToggled;
+
+	[ObservableProperty]
+	[NotifyPropertyChangedFor( nameof( BeepStateToggled ) )]
+	ICharacteristic beepState;
 	[ObservableProperty]
 	bool beepStateToggled;
+
+	[ObservableProperty]
+	[NotifyPropertyChangedFor( nameof( BlinkStateToggled ) )]
+	ICharacteristic blinkState;
 	[ObservableProperty]
 	bool blinkStateToggled;
+
 	[ObservableProperty]
 	static string bikeImage;
+
 	[ObservableProperty]
 	static bool isBikeAnimated;
+
 	[ObservableProperty]
 	string statusAlarm;
 
 
 	public MainPageViewModel( IBluetoothLE bluetoothLE, IAdapter adapter, IFingerprint fingerprint ) : base( bluetoothLE, adapter )
 	{
+		this.fingerprint = fingerprint;
 		Application.Current.RequestedThemeChanged += ( sender, args ) =>
 		{
 			currentTheme = args.RequestedTheme;
 			BikeImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		};
 		currentTheme = Application.Current.RequestedTheme;
-		StatusAlarm = AppResources.LabelStatus_Inactive;
+		StatusAlarm = LocalizationResourceManager.Instance["LabelStatus_Inactive"].ToString();
 		BikeImage = currentTheme is AppTheme.Light ? "moto_light.png" : "moto_dark.png";
 		IsBikeAnimated = false;
 		BeepStateToggled = false;
 		BlinkStateToggled = false;
-		this.fingerprint = fingerprint;
+
 	}
 	[RelayCommand]
 	async Task Authenticate()
 	{
-		var request = new AuthenticationRequestConfiguration( AppResources.BiometricAuth_Title, AppResources.BiometricAuth_Reason )
+		IsBiometrics = Preferences.Get( "biometrics", false );
+		if ( !IsBiometrics ) return;
+
+		var request = new AuthenticationRequestConfiguration(
+			AppResources.BiometricAuth_Title,
+			AppResources.BiometricAuth_Reason )
 		{
 			CancelTitle = AppResources.BiometricCancelOptionText
 		};
@@ -58,7 +79,24 @@ public partial class MainPageViewModel : BaseViewModel
 		if ( result.Authenticated )
 		{
 			// do secret stuff :)
-			await Shell.Current.DisplayAlert( AppResources.DialogAuth_AccessGranted_Title, AppResources.DialogAuth_AccessGranted_Message, "OK" );
+			await Shell.Current.DisplayAlert(
+				AppResources.DialogAuth_AccessGranted_Title,
+				AppResources.DialogAuth_AccessGranted_Message,
+				"OK" );
+
+			if ( IsNotConnected )
+			{
+				var alertResult = await Shell.Current.DisplayAlert(
+					AppResources.DialogConnection_Title,
+					AppResources.DialogConnection_Message,
+					AppResources.DialogButtonText_Yes,
+					AppResources.DialogButtonText_No );
+
+				if ( !alertResult ) return;
+
+				await Shell.Current.GoToAsync( nameof( ScannerPage ), true );
+
+			}
 		}
 		else
 		{
@@ -68,10 +106,71 @@ public partial class MainPageViewModel : BaseViewModel
 		}
 	}
 
-	async Task GetAlarmState()
+	async Task<bool> SetupCharacteristic( ICharacteristic characteristic )
 	{
-		AlarmState = await GetRemoteCharacteristic( RemoteDevice, AlarmServiceUuids.AlarmService, AlarmServiceUuids.State );
-		AlarmStateToggled = (bool) await GetRemoteCharacteriticValue( AlarmState );
+		await characteristic.ReadAsync();
+		characteristic.ValueUpdated += Characteristic_ValueUpdated;
+		await characteristic.StartUpdatesAsync();
+		return (bool) await GetRemoteCharacteriticValue( characteristic );
+	}
+	[RelayCommand]
+	async Task GetCharacteristicsState()
+	{
+		try
+		{
+			IsBusy = true;
+			if ( RemoteDevice?.Device.State is Plugin.BLE.Abstractions.DeviceState.Connected )
+			{
+				AlarmState = await GetRemoteCharacteristic(
+					RemoteDevice,
+					AlarmServiceUuids.AlarmService,
+					AlarmServiceUuids.State );
+				AlarmStateToggled = await SetupCharacteristic( AlarmState );
+
+				BeepState = await GetRemoteCharacteristic(
+					RemoteDevice,
+					AlarmServiceUuids.AlarmService,
+					AlarmServiceUuids.Siren );
+				BeepStateToggled = await SetupCharacteristic( BeepState );
+
+				BlinkState = await GetRemoteCharacteristic(
+					RemoteDevice,
+					AlarmServiceUuids.AlarmService,
+					AlarmServiceUuids.Blinkers );
+				BlinkStateToggled = await SetupCharacteristic( BlinkState );
+			}
+		}
+		catch ( Exception )
+		{
+
+			throw;
+		}
+		finally
+		{
+			IsBusy = false;
+		}
+	}
+
+	private void Characteristic_ValueUpdated( object sender, CharacteristicUpdatedEventArgs e )
+	{
+		switch ( e.Characteristic.Uuid )
+		{
+			case AlarmServiceUuids.State:
+			AlarmState = e.Characteristic;
+			AlarmStateToggled = (bool) GetRemoteCharacteriticValue( AlarmState ).Result;
+			break;
+			case AlarmServiceUuids.Siren:
+			BeepState = e.Characteristic;
+			BeepStateToggled = (bool) GetRemoteCharacteriticValue( BeepState ).Result;
+			break;
+			case AlarmServiceUuids.Blinkers:
+			BlinkState = e.Characteristic;
+			BlinkStateToggled = (bool) GetRemoteCharacteriticValue( BlinkState ).Result;
+			break;
+			default:
+			break;
+		}
+
 	}
 
 	[RelayCommand]
@@ -82,9 +181,10 @@ public partial class MainPageViewModel : BaseViewModel
 			await OnToastAsync( AppResources.ToastText_AlreadyActive );
 			return;
 		}
-		AlarmStateToggled = true;
-		StatusAlarm = AppResources.LabelStatus_Active;
 		AnimateConfigurations( currentTheme, BeepStateToggled, BlinkStateToggled );
+		await WriteRemoteCharacteristicValue( AlarmState );
+		StatusAlarm = LocalizationResourceManager.Instance["LabelStatus_Active"].ToString();
+		//AnimateConfigurations( currentTheme, BeepStateToggled, BlinkStateToggled );
 	}
 
 	[RelayCommand]
@@ -95,12 +195,13 @@ public partial class MainPageViewModel : BaseViewModel
 			await OnToastAsync( AppResources.ToastText_AlreadyInactive );
 			return;
 		}
-		AlarmStateToggled = false;
-		StatusAlarm = AppResources.LabelStatus_Inactive;
 		AnimateConfigurations( currentTheme, BeepStateToggled, BlinkStateToggled, 2 );
+		await WriteRemoteCharacteristicValue( AlarmState );
+		StatusAlarm = LocalizationResourceManager.Instance["LabelStatus_Inactive"].ToString();
+		//AnimateConfigurations( currentTheme, BeepStateToggled, BlinkStateToggled, 2 );
 	}
 
-	void AnimateConfigurations(AppTheme theme, bool beep, bool blink, int reapeat = 1 )
+	void AnimateConfigurations( AppTheme theme, bool beep, bool blink, int reapeat = 1 )
 	{
 		if ( blink || beep )
 		{
@@ -123,21 +224,23 @@ public partial class MainPageViewModel : BaseViewModel
 	}
 
 	[RelayCommand]
-	void ToggleBeep()
+	async Task ToggleBeep()
 	{
-		BeepStateToggled = !BeepStateToggled;
-		if ( BeepStateToggled )
+		if ( !BeepStateToggled )
 			BikeAnimation( currentTheme, "moto_beep", 1 );
+		await WriteRemoteCharacteristicValue( BeepState );
+		//if ( BeepStateToggled )
+		//	BikeAnimation( currentTheme, "moto_beep", 1 );
 	}
 
 	[RelayCommand]
-	void ToggleBlink()
+	async Task ToggleBlink()
 	{
-		BlinkStateToggled = !BlinkStateToggled;
-		if ( BlinkStateToggled )
+		if ( !BlinkStateToggled )
 			BikeAnimation( currentTheme, "moto_blink", 1 );
-
-
+		await WriteRemoteCharacteristicValue( BlinkState );
+		//if ( BlinkStateToggled )
+		//	BikeAnimation( currentTheme, "moto_blink", 1 );
 	}
 
 	void BikeAnimation( AppTheme theme, string animation, int reapeat = -1 )

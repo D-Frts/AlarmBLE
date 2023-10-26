@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:AlarmBle.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:strings="clr-namespace:AlarmBle.Resources.Localization"
+             xmlns:extensions="clr-namespace:AlarmBle.Extensions"
+             x:Class="AlarmBle.View.AppSettingsPage"
+             x:DataType="viewmodel:AppSettingsViewModel"
+             Title="{extensions:Translate MenuItem_Settings}">
+
+    <VerticalStackLayout 
+        Spacing="15"
+        Padding="10, 20, 10, 10">
+        <!--Componente que desenha a confuguração de biometria-->
+        <VerticalStackLayout 
+            Spacing="15">
+            <Grid 
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="25"
+                HeightRequest="50"
+                HorizontalOptions="Fill">
+                <Image 
+                    Source="{AppThemeBinding Light=biometrics_light.png, Dark=biometrics_dark.png}"
+                    HorizontalOptions="CenterAndExpand"
+                    Aspect="AspectFit"/>
+                <Label 
+                    Grid.Column="1"
+                    Text="{extensions:Translate AppSettings_Biometrics}"
+                    Style="{StaticResource LargeLabel}"
+                    VerticalOptions="CenterAndExpand">
+                </Label>
+                <Switch
+                    Grid.Column="2"
+                    Style="{StaticResource BaseSwitch}"
+                    IsToggled="{Binding IsBiometrics}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    <Switch.Behaviors>
+                        <toolkit:EventToCommandBehavior 
+                            x:TypeArguments="ToggledEventArgs"
+                            EventName="Toggled"
+                            Command="{Binding SetAppBiometricsCommand}"/>
+                    </Switch.Behaviors>
+                </Switch>
+
+            </Grid>
+            <Line
+            X1="350"
+            Style="{StaticResource HorizontalLine}"/>
+        </VerticalStackLayout>
+        <!--Componente que desenha a confuguração de idioma-->
+        <VerticalStackLayout 
+            Spacing="15">
+            <Grid 
+                ColumnDefinitions="Auto, *"
+                ColumnSpacing="25"
+                HeightRequest="50">
+                <Image 
+                    Source="{AppThemeBinding Light=lang_light.png, Dark=lang_dark.png}"
+                    HorizontalOptions="CenterAndExpand"
+                    Aspect="AspectFit"/>
+                <Label 
+                    Grid.Column="1"
+                    Text="{extensions:Translate AppSettings_AppLanguage}"
+                    Style="{StaticResource LargeLabel}"
+                    VerticalOptions="CenterAndExpand"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding SetAppLanguageCommand}"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Line
+            Style="{StaticResource HorizontalLine}"
+            X1="350"/>
+
+        </VerticalStackLayout>
+
+    </VerticalStackLayout>
+
+</ContentPage>

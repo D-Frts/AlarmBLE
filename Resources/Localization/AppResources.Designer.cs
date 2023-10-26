@@ -61,6 +61,69 @@ namespace AlarmBle.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assault Mode.
+        /// </summary>
+        internal static string AlarmSettingsLabel_AssaultMode {
+            get {
+                return ResourceManager.GetString("AlarmSettingsLabel_AssaultMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Passkey.
+        /// </summary>
+        internal static string AlarmSettingsLabel_ChangePasskey {
+            get {
+                return ResourceManager.GetString("AlarmSettingsLabel_ChangePasskey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movement Sensor.
+        /// </summary>
+        internal static string AlarmSettingsLabel_MovementSensor {
+            get {
+                return ResourceManager.GetString("AlarmSettingsLabel_MovementSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Presence Mode.
+        /// </summary>
+        internal static string AlarmSettingsLabel_PresenceMode {
+            get {
+                return ResourceManager.GetString("AlarmSettingsLabel_PresenceMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensibilidade.
+        /// </summary>
+        internal static string AlarmSettingsLabel_Sensibility {
+            get {
+                return ResourceManager.GetString("AlarmSettingsLabel_Sensibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App Language.
+        /// </summary>
+        internal static string AppSettings_AppLanguage {
+            get {
+                return ResourceManager.GetString("AppSettings_AppLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use biometrics to enter in the app.
+        /// </summary>
+        internal static string AppSettings_Biometrics {
+            get {
+                return ResourceManager.GetString("AppSettings_Biometrics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Let me check if you are really you!.
         /// </summary>
         internal static string BiometricAuth_Reason {
@@ -84,6 +147,42 @@ namespace AlarmBle.Resources.Localization {
         internal static string BiometricCancelOptionText {
             get {
                 return ResourceManager.GetString("BiometricCancelOptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string CancelText {
+            get {
+                return ResourceManager.GetString("CancelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Passkey.
+        /// </summary>
+        internal static string ChangePasskeyButton_SavePasskey {
+            get {
+                return ResourceManager.GetString("ChangePasskeyButton_SavePasskey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Passkey.
+        /// </summary>
+        internal static string ChangePasskeyLabel_CurrentPasskey {
+            get {
+                return ResourceManager.GetString("ChangePasskeyLabel_CurrentPasskey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Passkey.
+        /// </summary>
+        internal static string ChangePasskeyLabel_NewPasskey {
+            get {
+                return ResourceManager.GetString("ChangePasskeyLabel_NewPasskey", resourceCulture);
             }
         }
         
@@ -120,6 +219,105 @@ namespace AlarmBle.Resources.Localization {
         internal static string DialogAuth_AccessGranted_Title {
             get {
                 return ResourceManager.GetString("DialogAuth_AccessGranted_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string DialogButtonText_No {
+            get {
+                return ResourceManager.GetString("DialogButtonText_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string DialogButtonText_Yes {
+            get {
+                return ResourceManager.GetString("DialogButtonText_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you like to connect to remote device?.
+        /// </summary>
+        internal static string DialogConnection_Message {
+            get {
+                return ResourceManager.GetString("DialogConnection_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Connected.
+        /// </summary>
+        internal static string DialogConnection_Title {
+            get {
+                return ResourceManager.GetString("DialogConnection_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English USA.
+        /// </summary>
+        internal static string DialogLanguage_OptionEnUS {
+            get {
+                return ResourceManager.GetString("DialogLanguage_OptionEnUS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Português Brasil.
+        /// </summary>
+        internal static string DialogLanguage_OptionPtBR {
+            get {
+                return ResourceManager.GetString("DialogLanguage_OptionPtBR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the app language.
+        /// </summary>
+        internal static string DialogLanguage_Title {
+            get {
+                return ResourceManager.GetString("DialogLanguage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        internal static string DialogTheme_OptionDark {
+            get {
+                return ResourceManager.GetString("DialogTheme_OptionDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        internal static string DialogTheme_OptionLight {
+            get {
+                return ResourceManager.GetString("DialogTheme_OptionLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System (Default).
+        /// </summary>
+        internal static string DialogTheme_OptionSystem {
+            get {
+                return ResourceManager.GetString("DialogTheme_OptionSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the app theme.
+        /// </summary>
+        internal static string DialogTheme_Title {
+            get {
+                return ResourceManager.GetString("DialogTheme_Title", resourceCulture);
             }
         }
         
@@ -291,6 +489,24 @@ namespace AlarmBle.Resources.Localization {
         internal static string NullValueText_Unknow {
             get {
                 return ResourceManager.GetString("NullValueText_Unknow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alarm Settings.
+        /// </summary>
+        internal static string TabName_AlarmSettings {
+            get {
+                return ResourceManager.GetString("TabName_AlarmSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App Settings.
+        /// </summary>
+        internal static string TabName_AppSettings {
+            get {
+                return ResourceManager.GetString("TabName_AppSettings", resourceCulture);
             }
         }
         
